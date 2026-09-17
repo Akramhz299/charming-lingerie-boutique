@@ -81,12 +81,12 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;letter-spacing:.01em;margin
 header.site{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.96);
   backdrop-filter:blur(12px);border-bottom:1px solid var(--line);transition:.3s var(--ease)}
 header.site.small .hd-main{height:64px}
-.hd-main{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;height:84px;transition:height .3s var(--ease)}
+.hd-main{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;height:84px;transition:height .3s var(--ease)}
 .logo{display:flex;flex-direction:column;line-height:1;min-width:0}
 .logo b{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:.04em;white-space:nowrap}
 .logo span{font-size:8.5px;letter-spacing:.42em;text-transform:uppercase;color:var(--rose-deep);margin-top:5px}
-.hd-tools{display:flex;align-items:center;gap:4px;justify-self:end}
-.icon-btn{position:relative;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;transition:.25s var(--ease)}
+.hd-tools{display:flex;align-items:center;gap:2px;justify-self:end;flex-shrink:0}
+.icon-btn{position:relative;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;transition:.25s var(--ease);flex-shrink:0}
 .icon-btn:hover{background:var(--cream)}
 .icon-btn svg{width:19px;height:19px;stroke:var(--ink);stroke-width:1.4;fill:none}
 .count{position:absolute;top:4px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;
@@ -94,6 +94,14 @@ header.site.small .hd-main{height:64px}
 .count.zero{display:none}
 .burger{display:grid}
 @media(min-width:1024px){.burger{display:none}}
+@media(max-width:1023px){
+  .hd-main{gap:8px;height:64px}
+  .logo b{font-size:17px;letter-spacing:.02em}
+  .logo span{font-size:7px;letter-spacing:.32em;margin-top:3px}
+  .icon-btn{width:34px;height:34px}
+  .icon-btn svg{width:16px;height:16px}
+  .count{top:2px;right:0;min-width:15px;height:15px;font-size:9px}
+}
 
 /* desktop nav + mega */
 .hd-nav{display:none;justify-self:center}
