@@ -1205,11 +1205,11 @@ document.addEventListener("click",e=>{
     go(nav.dataset.go,nav.dataset.cat||view.cat);return;}
   if(t.closest("[data-guide]")){e.preventDefault();openGuide();return}
   if(t.closest("[data-nl]")){e.preventDefault();closeAll();closeSheets();$("#newsSec").scrollIntoView({behavior:"smooth"});return}
-  const open=t.closest("[data-open]");if(open){openPDP(open.dataset.open);return}
   const quick=t.closest("[data-quick]");
   if(quick){const p=byId(quick.dataset.quick);
     addToCart(p.id,p.colors[0],SIZES[p.sizeKey][Math.min(1,SIZES[p.sizeKey].length-1)],1);
     openPanel("#cartPanel");return}
+  const open=t.closest("[data-open]");if(open){openPDP(open.dataset.open);return}
   const w=t.closest("[data-wish]");
   if(w){const id=+w.dataset.wish;
     if(wish.includes(id)){wish=wish.filter(x=>x!==id);toast("Retiré des favoris")}
