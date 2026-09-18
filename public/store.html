@@ -661,6 +661,22 @@ const PRODUCTS = [
    compo:["Soutien-gorge + culotte","Écrin rigide ivoire","Ruban satiné","Carte message offerte"]}
 ];
 
+/* --- Surcharges venant de la page de gestion (admin.html) : prix, tailles, stock --- */
+(function applyAdminOverrides(){
+  let ov={};
+  try{ ov=JSON.parse(localStorage.getItem("cls_admin"))||{} }catch(e){ ov={} }
+  PRODUCTS.forEach(p=>{
+    const o=ov[p.id]; if(!o) return;
+    if(o.price!=null && o.price!=="") p.price=+o.price;
+    if(o.old!=null && o.old!=="") p.old=+o.old;
+    if(Array.isArray(o.sizes) && o.sizes.length) p.sizes=o.sizes;
+    if(o.stock!=null && o.stock!=="") p.stock=+o.stock;
+  });
+})();
+const sizesOf=p=>(p.sizes&&p.sizes.length?p.sizes:SIZES[p.sizeKey]);
+const inStock=p=>(p.stock==null?true:p.stock>0);
+
+
 /* ============================================================================
    2. UTILITAIRES & ÉTAT
    ============================================================================ */
