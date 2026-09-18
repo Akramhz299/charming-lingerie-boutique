@@ -1,1 +1,1 @@
-<?php get_header(); ?><main class="site-main"><?php woocommerce_content(); ?></main><?php get_footer(); ?>
+<?php get_header(); woocommerce_content(); get_footer(); ?>
