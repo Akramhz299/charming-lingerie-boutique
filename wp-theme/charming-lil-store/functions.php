@@ -62,3 +62,7 @@ function cls_body_classes($classes){
   return $classes;
 }
 add_filter('body_class','cls_body_classes');
+
+function cls_woocommerce_available(){
+  return class_exists('WooCommerce');
+}
