@@ -53,3 +53,12 @@ function cls_products($limit=8){
   } else echo '<p>'.esc_html__('Aucun produit disponible pour le moment.','charming-lil-store').'</p>';
   wp_reset_postdata();
 }
+
+function cls_woocommerce_notices(){ if(function_exists('wc_print_notices')) wc_print_notices(); }
+add_action('woocommerce_before_shop_loop', 'cls_woocommerce_notices', 5);
+
+function cls_body_classes($classes){
+  if(class_exists('WooCommerce') && (is_shop() || is_product() || is_cart() || is_checkout() || is_account_page())) $classes[]='cls-commerce-page';
+  return $classes;
+}
+add_filter('body_class','cls_body_classes');
