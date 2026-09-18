@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',()=>{const b=document.querySelector('[data-cls-menu]'),m=document.querySelector('[data-cls-mobile]');if(b&&m)b.addEventListener('click',()=>m.classList.toggle('open'));document.querySelectorAll('[data-cls-close]').forEach(x=>x.addEventListener('click',()=>m&&m.classList.remove('open')));});
