@@ -1,0 +1,1 @@
+<?php get_header(); ?><main class="site-main section"><div class="wrap"><?php while(have_posts()):the_post();the_title('<h1 class="section">','</h1>');the_content();endwhile; ?></div></main><?php get_footer(); ?>
