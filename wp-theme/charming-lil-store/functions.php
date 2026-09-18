@@ -46,7 +46,7 @@ function cls_products($limit=8){
       echo '<article class="product-card"><a href="'.esc_url(get_permalink()).'"><div class="product-image">';
       if($product->is_on_sale()) echo '<span class="onsale">'.esc_html__('Promotion','charming-lil-store').'</span>';
       echo $product->get_image('woocommerce_thumbnail');
-      echo '</div><div class="product-info"><div class="product-cat">'.wp_kses_post(wc_get_product_category_list($product->get_id())).'</div>';
+      echo '</div><div class="product-info"><div class="product-cat">'.esc_html(wp_strip_all_tags(wc_get_product_category_list($product->get_id()))).'</div>';
       echo '<h3 class="product-title">'.esc_html(get_the_title()).'</h3><div class="price">'.$product->get_price_html().'</div></div></a></article>';
     }
     echo '</div>';
