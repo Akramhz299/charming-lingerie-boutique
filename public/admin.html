@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestion produits — Charming Lil Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--rose:#f6eceb;--rose-deep:#c98a97;--ink:#1b1717;--line:#e8dedb;--muted:#7d7371;--sale:#b8434f;--ok:#2e7d59}
+  *{box-sizing:border-box}
+  body{margin:0;background:#fbf8f7;color:var(--ink);font:400 15px/1.55 Jost,system-ui,sans-serif}
+  header{background:#fff;border-bottom:1px solid var(--line);padding:18px 20px;position:sticky;top:0;z-index:5}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+  h1{font:600 28px/1.2 "Cormorant Garamond",serif;margin:0}
+  .sub{color:var(--muted);font-size:13px;margin-top:4px}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+  input,select{font:inherit;color:inherit;background:#fff;border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+  input[type=number]{width:100px}
+  .btn{font:500 14px Jost,sans-serif;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:10px 18px;cursor:pointer}
+  .btn.ghost{background:#fff;color:var(--ink)}
+  .btn.rose{background:var(--rose-deep);border-color:var(--rose-deep)}
+  .btn.warn{background:#fff;color:var(--sale);border-color:var(--sale)}
+  main{padding:26px 0 90px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;display:grid;grid-template-columns:78px 1fr;gap:16px}
+  .card img{width:78px;height:104px;object-fit:cover;border-radius:10px;background:var(--rose)}
+  .nm{font:600 19px/1.2 "Cormorant Garamond",serif}
+  .cat{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.14em}
+  .fields{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;align-items:flex-end}
+  label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+  .sizes{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .sz{border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer;background:#fff;user-select:none}
+  .sz.on{border-color:var(--ink);background:var(--ink);color:#fff}
+  .tag{display:inline-block;font-size:12px;border-radius:999px;padding:3px 10px;margin-left:8px}
+  .tag.out{background:#fdecee;color:var(--sale)}
+  .tag.low{background:#fff6e6;color:#8a6212}
+  .tag.ok{background:#eaf5ef;color:var(--ok)}
+  .tag.edited{background:var(--rose);color:var(--rose-deep)}
+  footer.savebar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;z-index:6}
+  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:76px;background:var(--ink);color:#fff;padding:11px 18px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;z-index:9}
+  .toast.on{opacity:1}
+  @media(max-width:640px){.card{grid-template-columns:60px 1fr}.card img{width:60px;height:80px}input[type=number]{width:84px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Gestion produits</h1>
+    <div class="sub">Modifiez les prix, les tailles et le stock. Les changements s'appliquent à la boutique après enregistrement.</div>
+    <div class="bar">
+      <input id="q" type="search" placeholder="Rechercher un produit…" style="flex:1;min-width:200px">
+      <select id="fcat"><option value="">Toutes les catégories</option></select>
+      <a class="btn ghost" href="store.html" target="_blank" rel="noopener">Voir la boutique</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap"><div id="list"></div></main>
+
+<footer class="savebar">
+  <button class="btn rose" id="save">Enregistrer les modifications</button>
+  <button class="btn ghost" id="export">Exporter (JSON)</button>
+  <button class="btn ghost" id="importBtn">Importer (JSON)</button>
+  <button class="btn warn" id="reset">Réinitialiser</button>
+  <input id="importFile" type="file" accept="application/json" hidden>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* Les données de référence sont chargées depuis store.html : aucune duplication à maintenir. */
+const KEY="cls_admin";
+let SIZES={}, COLORS={}, CATS=[], PRODUCTS=[], DRAFT={};
+
+const $=s=>document.querySelector(s);
+const money=v=>new Intl.NumberFormat("fr-MA",{maximumFractionDigits:0}).format(v)+" MAD";
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),2200)}
+function load(){try{DRAFT=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){DRAFT={}}}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+async function bootData(){
+  const src=await (await fetch("store.html",{cache:"no-store"})).text();
+  const grab=name=>{
+    const i=src.indexOf("const "+name+"=")>=0?src.indexOf("const "+name+"="):src.indexOf("const "+name+" =");
+    if(i<0) throw new Error("bloc "+name+" introuvable");
+    const start=src.indexOf("=",i)+1;
+    const open=src.slice(start).search(/[[{]/)+start;
+    const openCh=src[open], closeCh=openCh==="["?"]":"}";
+    let depth=0,inStr=null;
+    for(let j=open;j<src.length;j++){
+      const c=src[j];
+      if(inStr){ if(c==="\\"){j++;continue} if(c===inStr) inStr=null; continue }
+      if(c==='"'||c==="'"||c==="`"){inStr=c;continue}
+      if(c===openCh)depth++;
+      else if(c===closeCh){depth--; if(!depth) return src.slice(open,j+1)}
+    }
+    throw new Error("bloc "+name+" incomplet");
+  };
+  const IMGsrc=grab("IMG");
+  const evaluate=new Function("const IMG="+IMGsrc+";return {SIZES:"+grab("SIZES")+",COLORS:"+grab("COLORS")+",CATS:"+grab("CATS")+",PRODUCTS:"+grab("PRODUCTS")+"}");
+  const data=evaluate();
+  SIZES=data.SIZES; COLORS=data.COLORS; CATS=data.CATS; PRODUCTS=data.PRODUCTS;
+  $("#fcat").insertAdjacentHTML("beforeend",CATS.map(c=>`<option value="${c.id}">${esc(c.n)}</option>`).join(""));
+}
+
+function cur(p){
+  const o=DRAFT[p.id]||{};
+  return {
+    price:o.price!=null?o.price:p.price,
+    old:o.old!=null?o.old:(p.old||0),
+    stock:o.stock!=null?o.stock:10,
+    sizes:(o.sizes&&o.sizes.length)?o.sizes:SIZES[p.sizeKey].slice()
+  };
+}
+function setField(id,k,v){ (DRAFT[id]=DRAFT[id]||{})[k]=v }
+
+function stockTag(n){
+  if(n<=0) return '<span class="tag out">Rupture</span>';
+  if(n<=5) return '<span class="tag low">Stock faible</span>';
+  return '<span class="tag ok">En stock</span>';
+}
+
+function render(){
+  const q=$("#q").value.trim().toLowerCase(), fc=$("#fcat").value;
+  const list=PRODUCTS.filter(p=>(!fc||p.cat===fc)&&(!q||(p.name+" "+p.sub).toLowerCase().includes(q)));
+  $("#list").innerHTML=list.map(p=>{
+    const c=cur(p), all=SIZES[p.sizeKey], edited=!!DRAFT[p.id];
+    return `<div class="card" data-id="${p.id}">
+      <img src="${p.imgs[0]}" alt="${esc(p.name)}">
+      <div>
+        <div class="cat">${esc(p.cat)} · ${esc(p.sub)}</div>
+        <div class="nm">${esc(p.name)} ${stockTag(+c.stock)}${edited?'<span class="tag edited">modifié</span>':""}</div>
+        <div class="fields">
+          <div><label>Prix (MAD)</label><input type="number" min="0" step="1" data-k="price" value="${c.price}"></div>
+          <div><label>Ancien prix (0 = aucun)</label><input type="number" min="0" step="1" data-k="old" value="${c.old}"></div>
+          <div><label>Stock (unités)</label><input type="number" min="0" step="1" data-k="stock" value="${c.stock}"></div>
+        </div>
+        <div><label style="margin-top:14px">Tailles disponibles</label>
+          <div class="sizes">${all.map(s=>`<span class="sz ${c.sizes.includes(s)?"on":""}" data-size="${s}">${s}</span>`).join("")}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join("")||`<p style="color:var(--muted)">Aucun produit ne correspond à cette recherche.</p>`;
+}
+
+document.addEventListener("input",e=>{
+  const inp=e.target.closest("input[data-k]");
+  if(inp){ const id=+inp.closest(".card").dataset.id; setField(id,inp.dataset.k,inp.value===""?0:+inp.value); return }
+  if(e.target.id==="q") render();
+});
+document.addEventListener("change",e=>{ if(e.target.id==="fcat") render() });
+document.addEventListener("click",e=>{
+  const sz=e.target.closest(".sz");
+  if(sz){
+    const card=sz.closest(".card"), id=+card.dataset.id, p=PRODUCTS.find(x=>x.id===id);
+    const chosen=[...card.querySelectorAll(".sz")].filter(el=>el!==sz?el.classList.contains("on"):!sz.classList.contains("on")).map(el=>el.dataset.size);
+    if(!chosen.length){ toast("Gardez au moins une taille."); return }
+    sz.classList.toggle("on");
+    setField(id,"sizes",SIZES[p.sizeKey].filter(s=>chosen.includes(s)));
+  }
+});
+
+$("#save").onclick=()=>{
+  localStorage.setItem(KEY,JSON.stringify(DRAFT));
+  toast("Modifications enregistrées ✦ rechargez la boutique");
+  render();
+};
+$("#reset").onclick=()=>{
+  if(!confirm("Revenir aux prix, tailles et stocks d'origine ?")) return;
+  DRAFT={}; localStorage.removeItem(KEY); render(); toast("Valeurs d'origine rétablies");
+};
+$("#export").onclick=()=>{
+  const blob=new Blob([JSON.stringify(DRAFT,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="charming-produits.json"; a.click();
+  URL.revokeObjectURL(a.href);
+};
+$("#importBtn").onclick=()=>$("#importFile").click();
+$("#importFile").onchange=async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  try{ DRAFT=JSON.parse(await f.text())||{}; render(); toast("Fichier importé — pensez à enregistrer") }
+  catch(err){ toast("Fichier JSON invalide") }
+  e.target.value="";
+};
+
+load();
+bootData().then(render).catch(err=>{
+  $("#list").innerHTML=`<p style="color:var(--sale)">Impossible de charger la liste des produits (${esc(err.message)}).</p>`;
+});
+</script>
+</body>
+</html>
