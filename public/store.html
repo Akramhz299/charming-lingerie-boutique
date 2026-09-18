@@ -859,9 +859,10 @@ function matchList(){
   let list=PRODUCTS.slice();
   if(view.cat && view.cat!=="all") list=list.filter(p=>p.cat===view.cat||p.tags.includes(view.cat));
   if(filters.cats.length) list=list.filter(p=>filters.cats.includes(p.cat));
-  if(filters.sizes.length) list=list.filter(p=>SIZES[p.sizeKey].some(s=>filters.sizes.includes(s)));
+  if(filters.sizes.length) list=list.filter(p=>sizesOf(p).some(s=>filters.sizes.includes(s)));
   if(filters.colors.length) list=list.filter(p=>p.colors.some(c=>filters.colors.includes(c)));
   list=list.filter(p=>p.price<=filters.max);
+  if(filters.stock) list=list.filter(inStock);
   if(filters.q){const q=filters.q.toLowerCase();list=list.filter(p=>(p.name+" "+p.sub+" "+p.cat).toLowerCase().includes(q))}
   if(filters.sort==="new") list.sort((a,b)=>(b.new?1:0)-(a.new?1:0)||b.id-a.id);
   else if(filters.sort==="asc") list.sort((a,b)=>a.price-b.price);
@@ -945,7 +946,7 @@ function openPDP(id){
 }
 function renderPDP(){
   const p=byId(pdp.id),disc=pct(p);
-  const sizes=SIZES[p.sizeKey];
+  const sizes=sizesOf(p);
   const similar=PRODUCTS.filter(x=>x.id!==p.id&&(x.cat===p.cat||x.tags.some(t=>p.tags.includes(t)))).slice(0,4);
   $("#pdpMount").innerHTML=`
   <div class="pdp">
@@ -971,11 +972,11 @@ function renderPDP(){
       </div>
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
         <div class="qty"><button data-pq="-1">−</button><b>${pdp.qty}</b><button data-pq="1">+</button></div>
-        <span class="muted" style="font-size:13px">En stock · expédié en 24h</span>
+        <span class="muted" style="font-size:13px">${inStock(p)?(p.stock!=null&&p.stock<=5?`Plus que ${p.stock} en stock`:"En stock · expédié en 24h"):"Rupture de stock"}</span>
       </div>
       <div class="pdp-cta">
-        <button class="btn btn-dark btn-block" data-addpdp>Ajouter au panier</button>
-        <button class="btn btn-rose btn-block" data-buynow>Commander maintenant</button>
+        <button class="btn btn-dark btn-block" data-addpdp ${inStock(p)?"":"disabled style=\"opacity:.45;cursor:not-allowed\""}>${inStock(p)?"Ajouter au panier":"Indisponible"}</button>
+        <button class="btn btn-rose btn-block" data-buynow ${inStock(p)?"":"disabled style=\"opacity:.45;cursor:not-allowed\""}>Commander maintenant</button>
       </div>
       <div class="cod">
         <svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
@@ -1231,7 +1232,7 @@ document.addEventListener("click",e=>{
   if(t.closest("[data-nl]")){e.preventDefault();closeAll();closeSheets();$("#newsSec").scrollIntoView({behavior:"smooth"});return}
   const quick=t.closest("[data-quick]");
   if(quick){const p=byId(quick.dataset.quick);
-    addToCart(p.id,p.colors[0],SIZES[p.sizeKey][Math.min(1,SIZES[p.sizeKey].length-1)],1);
+    addToCart(p.id,p.colors[0],sizesOf(p)[Math.min(1,sizesOf(p).length-1)],1);
     openPanel("#cartPanel");return}
   const open=t.closest("[data-open]");if(open){openPDP(open.dataset.open);return}
   const w=t.closest("[data-wish]");
