@@ -1,0 +1,351 @@
+{
+  "version": 1,
+  "sdk_version": "2.3.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "charming-lil-store-mcp",
+      "version": "1.0.0",
+      "title": "Charming Lil Store"
+    },
+    "tools": [
+      {
+        "name": "list_categories",
+        "title": "Catégories et couleurs",
+        "description": "Liste les catégories et sous-catégories de la boutique Charming Lil Store, le nombre de produits par catégorie et les couleurs disponibles.",
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "search_products",
+        "title": "Rechercher des produits",
+        "description": "Recherche dans le catalogue Charming Lil Store (lingerie, soutiens-gorge, culottes, pyjamas, ensembles). Filtres par catégorie, taille, couleur, prix et promotions. Prix en MAD.",
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Mots-clés libres, ex. « pyjama satin »"
+            },
+            "category": {
+              "type": "string",
+              "enum": [
+                "lingerie",
+                "soutiens-gorge",
+                "culottes",
+                "pyjamas",
+                "ensembles",
+                "nouveautes",
+                "promotions"
+              ]
+            },
+            "size": {
+              "type": "string",
+              "description": "Taille exacte, ex. « 80B » ou « M »"
+            },
+            "color": {
+              "type": "string",
+              "enum": [
+                "rose",
+                "noir",
+                "nude",
+                "blanc",
+                "beige",
+                "bordeaux"
+              ],
+              "description": "Clé couleur"
+            },
+            "maxPrice": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Prix maximum en MAD"
+            },
+            "onSale": {
+              "type": "boolean",
+              "description": "Uniquement les produits en promotion"
+            },
+            "sort": {
+              "type": "string",
+              "enum": [
+                "popularite",
+                "nouveautes",
+                "prix-croissant",
+                "prix-decroissant"
+              ],
+              "default": "popularite"
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 10
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "count": {
+              "type": "number"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "products": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string"
+                  },
+                  "subcategory": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "oldPrice": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "discountPercent": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "colors": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "sizes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "rating": {
+                    "type": "number"
+                  },
+                  "reviews": {
+                    "type": "number"
+                  },
+                  "isNew": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "category",
+                  "subcategory",
+                  "price",
+                  "oldPrice",
+                  "discountPercent",
+                  "colors",
+                  "sizes",
+                  "rating",
+                  "reviews",
+                  "isNew"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "count",
+            "currency",
+            "products"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        }
+      },
+      {
+        "name": "get_product",
+        "title": "Détail d'un produit",
+        "description": "Retourne la fiche complète d'un produit Charming Lil Store : description, composition, couleurs, tailles disponibles, prix MAD, avis et guide des tailles associé.",
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "productId": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "description": "Identifiant du produit (voir search_products)"
+            }
+          },
+          "required": [
+            "productId"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "size_guide",
+        "title": "Guide des tailles",
+        "description": "Guide des tailles Charming Lil Store : soutiens-gorge de 70A à 90D, culottes et pyjamas/ensembles de XS à XXL, avec la méthode de mesure.",
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "bra",
+                "panty",
+                "sleep"
+              ],
+              "description": "bra = soutiens-gorge, panty = culottes, sleep = pyjamas et ensembles"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "store_info",
+        "title": "Informations boutique",
+        "description": "Informations pratiques sur Charming Lil Store : moyen de paiement, frais et délais de livraison au Maroc, contact WhatsApp, devise.",
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "prepare_order",
+        "title": "Préparer une commande",
+        "description": "Calcule le récapitulatif d'une commande (sous-total, livraison, total en MAD) et retourne un lien WhatsApp prérempli pour la confirmer. N'enregistre aucune commande : la cliente valide elle-même sur WhatsApp. Paiement à la livraison.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "productId": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0
+                  },
+                  "size": {
+                    "type": "string",
+                    "description": "Taille choisie, ex. « 80B » ou « M »"
+                  },
+                  "color": {
+                    "type": "string",
+                    "description": "Clé couleur, ex. « rose »"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 20,
+                    "default": 1
+                  }
+                },
+                "required": [
+                  "productId",
+                  "size"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1
+            },
+            "city": {
+              "type": "string",
+              "description": "Ville de livraison au Maroc"
+            },
+            "customerName": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "items"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "subtotal": {
+              "type": "number"
+            },
+            "shipping": {
+              "type": "number"
+            },
+            "total": {
+              "type": "number"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "whatsappUrl": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "subtotal",
+            "shipping",
+            "total",
+            "currency",
+            "whatsappUrl"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        }
+      }
+    ]
+  }
+}
