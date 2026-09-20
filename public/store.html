@@ -570,11 +570,34 @@ footer a{opacity:.72}footer a:hover{opacity:1;color:var(--nude)}
 
 <div class="toasts" id="toasts"></div>
 
+<script src="store-data.js"></script>
 <script>
 /* ============================================================================
-   1. DONNÉES — modifiez librement produits, prix (MAD), tailles et images
+   1. DONNÉES — tout vient de la couche centrale (store-data.js),
+   modifiable depuis le tableau de bord /admin. Ne rien coder en dur ici.
    ============================================================================ */
+const MEDIA = CLS.mediaMap();
+const SETTINGS = CLS.getSettings();
+const HOME = CLS.getHomepage();
 const SHOP = {
+  brand: SETTINGS.brand,
+  phone: SETTINGS.phone,
+  waLink: "https://wa.me/" + String(SETTINGS.whatsapp || "").replace(/\D/g, ""),
+  currency: SETTINGS.currency || "MAD",
+  shipping: SETTINGS.shipping || { base: 35, freeFrom: 600 }
+};
+const IMG = Object.assign({}, MEDIA);
+const SIZES = CLS.SIZE_SETS;
+const COLORS = CLS.colorMap();
+const CATS = CLS.getCategories().filter(c => c.visible !== false);
+const PRODUCTS = CLS.getProducts()
+  .filter(p => p.visible)
+  .map(p => Object.assign({}, p, { imgs: (p.imgs && p.imgs.length ? p.imgs : ["set"]).map(r => CLS.img(r, MEDIA)) }));
+const sizesOf = p => CLS.sizesOf(p);
+const inStock = p => CLS.inStock(p);
+const stockTotal = p => CLS.stockTotal(p);
+
+const LEGACY = {
   brand:"Charming Lil Store",
   phone:"+212658344379",
   waLink:"https://wa.me/212658344379",
