@@ -1280,7 +1280,7 @@ $("#newsForm").addEventListener("submit",e=>{e.preventDefault();e.target.reset()
 addEventListener("scroll",()=>$("#hdr").classList.toggle("small",scrollY>90));
 
 /* ticker */
-const TICKS=["Paiement à la livraison — Commandez sans avance","Livraison offerte dès 600 MAD","Nouveautés pyjamas satin en ligne","Échange gratuit sous 14 jours"];
+const TICKS=["Paiement à la livraison — Commandez sans avance","Livraison offerte dès "+money(SHOP.shipping.freeFrom)+"","Nouveautés pyjamas satin en ligne","Échange gratuit sous 14 jours"];
 let ti=0;setInterval(()=>{ti=(ti+1)%TICKS.length;const el=$("#tickerTxt");el.style.opacity=0;
   setTimeout(()=>{el.textContent=TICKS[ti];el.style.opacity=1},300)},4200);
 $("#tickerTxt").style.transition="opacity .3s";

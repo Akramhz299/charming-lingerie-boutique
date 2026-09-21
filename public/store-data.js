@@ -123,7 +123,7 @@
       visible: true,
       img: "hero",
       eyebrow: "Nouvelle collection · Automne",
-      title: "La lingerie qui vous ressemble",
+      title: "La lingerie qui *vous* ressemble",
       subtitle: "Dentelles délicates, satins fluides et pyjamas doux. Livrés partout au Maroc, avec paiement à la livraison.",
       btn1: { t: "Découvrir les nouveautés", cat: "nouveautes" },
       btn2: { t: "Voir les pyjamas", cat: "pyjamas" },
