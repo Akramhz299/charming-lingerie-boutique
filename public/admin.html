@@ -3,190 +3,953 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gestion produits — Charming Lil Store</title>
+<title>Tableau de bord — Charming Lil Store</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root{--rose:#f6eceb;--rose-deep:#c98a97;--ink:#1b1717;--line:#e8dedb;--muted:#7d7371;--sale:#b8434f;--ok:#2e7d59}
-  *{box-sizing:border-box}
-  body{margin:0;background:#fbf8f7;color:var(--ink);font:400 15px/1.55 Jost,system-ui,sans-serif}
-  header{background:#fff;border-bottom:1px solid var(--line);padding:18px 20px;position:sticky;top:0;z-index:5}
-  .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
-  h1{font:600 28px/1.2 "Cormorant Garamond",serif;margin:0}
-  .sub{color:var(--muted);font-size:13px;margin-top:4px}
-  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
-  input,select{font:inherit;color:inherit;background:#fff;border:1px solid var(--line);border-radius:8px;padding:9px 11px}
-  input[type=number]{width:100px}
-  .btn{font:500 14px Jost,sans-serif;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:10px 18px;cursor:pointer}
-  .btn.ghost{background:#fff;color:var(--ink)}
-  .btn.rose{background:var(--rose-deep);border-color:var(--rose-deep)}
-  .btn.warn{background:#fff;color:var(--sale);border-color:var(--sale)}
-  main{padding:26px 0 90px}
-  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;display:grid;grid-template-columns:78px 1fr;gap:16px}
-  .card img{width:78px;height:104px;object-fit:cover;border-radius:10px;background:var(--rose)}
-  .nm{font:600 19px/1.2 "Cormorant Garamond",serif}
-  .cat{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.14em}
-  .fields{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;align-items:flex-end}
-  label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
-  .sizes{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-  .sz{border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer;background:#fff;user-select:none}
-  .sz.on{border-color:var(--ink);background:var(--ink);color:#fff}
-  .tag{display:inline-block;font-size:12px;border-radius:999px;padding:3px 10px;margin-left:8px}
-  .tag.out{background:#fdecee;color:var(--sale)}
-  .tag.low{background:#fff6e6;color:#8a6212}
-  .tag.ok{background:#eaf5ef;color:var(--ok)}
-  .tag.edited{background:var(--rose);color:var(--rose-deep)}
-  footer.savebar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;z-index:6}
-  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:76px;background:var(--ink);color:#fff;padding:11px 18px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;z-index:9}
-  .toast.on{opacity:1}
-  @media(max-width:640px){.card{grid-template-columns:60px 1fr}.card img{width:60px;height:80px}input[type=number]{width:84px}}
+:root{
+  --ink:#1b1717; --ink-soft:#5c5350; --ivory:#fbf9f7; --cream:#f4efec; --line:#e6ddd8;
+  --nude:#d9bfae; --burgundy:#7e2b38; --rose:#f0cdd3; --ok:#2e7d59; --warn:#8a6212; --bad:#b8434f;
+  --serif:"Cormorant Garamond",Georgia,serif; --sans:"Jost",system-ui,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--ivory);color:var(--ink);font:400 15px/1.55 var(--sans)}
+a{color:inherit}
+h1,h2,h3{font-family:var(--serif);font-weight:600;margin:0}
+.layout{display:grid;grid-template-columns:254px 1fr;min-height:100vh}
+/* ---------- sidebar ---------- */
+.side{background:var(--ink);color:#f7f4f1;padding:26px 18px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{font-family:var(--serif);font-size:22px;font-weight:600;letter-spacing:.03em}
+.brand span{display:block;font:400 8px/1 var(--sans);letter-spacing:.4em;text-transform:uppercase;color:var(--nude);margin-top:7px}
+.menu{margin-top:30px;display:flex;flex-direction:column;gap:2px}
+.menu a{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:10px;text-decoration:none;font-size:14px;color:#e9e2de;transition:.25s var(--ease)}
+.menu a svg{width:17px;height:17px;flex:0 0 17px;fill:none;stroke:currentColor;stroke-width:1.5}
+.menu a:hover{background:rgba(255,255,255,.08)}
+.menu a.on{background:var(--ivory);color:var(--ink)}
+.side-foot{margin-top:28px;border-top:1px solid rgba(255,255,255,.14);padding-top:18px;display:flex;flex-direction:column;gap:8px}
+.side-foot a,.side-foot button{font:400 13px var(--sans);background:none;border:0;color:#cfc4be;text-align:left;padding:6px 0;cursor:pointer;text-decoration:none}
+.side-foot a:hover,.side-foot button:hover{color:#fff}
+/* ---------- topbar ---------- */
+.main{min-width:0;display:flex;flex-direction:column}
+.top{background:#fff;border-bottom:1px solid var(--line);padding:16px 26px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:20}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:9px;width:40px;height:40px;cursor:pointer}
+.burger span{display:block;width:17px;height:1.5px;background:var(--ink);margin:3px auto}
+.top h1{font-size:25px}
+.top .grow{flex:1}
+.search{position:relative}
+.search input{width:250px}
+main{padding:26px;max-width:1240px;width:100%}
+/* ---------- controls ---------- */
+input,select,textarea{font:400 14px var(--sans);color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--nude);box-shadow:0 0 0 3px rgba(217,191,174,.25)}
+textarea{min-height:104px;resize:vertical}
+label.lb{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.btn{font:500 14px var(--sans);border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:11px 20px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:.25s var(--ease);white-space:nowrap}
+.btn:hover{opacity:.87}
+.btn.ghost{background:#fff;color:var(--ink)}
+.btn.nude{background:var(--nude);border-color:var(--nude);color:var(--ink)}
+.btn.bad{background:#fff;color:var(--bad);border-color:var(--bad)}
+.btn.sm{padding:7px 13px;font-size:13px}
+.btn.icon{padding:7px 10px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px}
+.card + .card{margin-top:16px}
+.card h2{font-size:21px;margin-bottom:4px}
+.card .hint{color:var(--ink-soft);font-size:13.5px;margin:0 0 16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.muted{color:var(--ink-soft)}
+.sep{height:1px;background:var(--line);margin:18px 0}
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:14px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.stat b{display:block;font-family:var(--serif);font-size:32px;font-weight:600;line-height:1.1}
+.stat span{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft)}
+.stat.acc{background:var(--cream)}
+/* ---------- table ---------- */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:#fff}
+table{border-collapse:collapse;width:100%;min-width:830px}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle;font-size:14px}
+th{font:500 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);background:var(--cream)}
+tr:last-child td{border-bottom:0}
+td img.th{width:52px;height:68px;object-fit:cover;border-radius:8px;background:var(--cream)}
+.pname{font-family:var(--serif);font-size:17px;font-weight:600}
+.pmeta{font-size:12px;color:var(--ink-soft)}
+.tag{display:inline-block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 10px;white-space:nowrap}
+.tag.ok{background:#eaf5ef;color:var(--ok)}
+.tag.low{background:#fff6e6;color:var(--warn)}
+.tag.out{background:#fdecee;color:var(--bad)}
+.tag.pub{background:#eef2f7;color:#3b5570}
+.tag.hid{background:var(--cream);color:var(--ink-soft)}
+.tag.sale{background:#f9e7ea;color:var(--burgundy)}
+.old{text-decoration:line-through;color:var(--ink-soft);font-size:12.5px}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+/* ---------- chips ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font-size:13px;cursor:pointer;user-select:none}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.sizegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:10px}
+.sizecell{border:1px solid var(--line);border-radius:12px;padding:10px}
+.sizecell .t{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:7px}
+.sizecell input{padding:7px 9px;text-align:center}
+.swatch{width:20px;height:20px;border-radius:50%;border:1px solid var(--line);display:inline-block;vertical-align:-4px;margin-right:7px}
+/* ---------- media ---------- */
+.drop{border:1.5px dashed var(--nude);border-radius:16px;background:var(--cream);padding:30px;text-align:center;cursor:pointer;transition:.25s}
+.drop.hot{background:#fff;border-color:var(--ink)}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:16px}
+.mitem{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.mitem.sel{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink)}
+.mitem img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:var(--cream);cursor:pointer}
+.mitem .mb{padding:9px 10px}
+.mitem .mb b{display:block;font:500 12.5px var(--sans);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mitem .mb .r{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.gal{display:flex;gap:12px;flex-wrap:wrap}
+.gcell{width:110px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;position:relative}
+.gcell img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.gcell .gb{display:flex;gap:4px;padding:6px;justify-content:center;flex-wrap:wrap}
+.gcell .mainbadge{position:absolute;top:6px;left:6px;background:var(--ink);color:#fff;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:999px}
+.mini{border:1px solid var(--line);background:#fff;border-radius:7px;width:26px;height:24px;cursor:pointer;font-size:12px;line-height:1}
+/* ---------- modal + toast ---------- */
+.veil{position:fixed;inset:0;background:rgba(27,23,23,.5);display:none;align-items:center;justify-content:center;z-index:60;padding:20px}
+.veil.on{display:flex}
+.modal{background:#fff;border-radius:18px;max-width:440px;width:100%;padding:26px}
+.modal h3{font-size:22px;margin-bottom:8px}
+.modal p{color:var(--ink-soft);margin:0 0 20px}
+.toasts{position:fixed;right:20px;bottom:20px;display:flex;flex-direction:column;gap:10px;z-index:80}
+.toast{background:var(--ink);color:#fff;border-radius:12px;padding:13px 18px;font-size:14px;box-shadow:0 14px 34px rgba(27,23,23,.22);opacity:0;transform:translateY(10px);transition:.3s var(--ease);max-width:330px}
+.toast.on{opacity:1;transform:none}
+.toast.err{background:var(--bad)}
+.empty{padding:40px;text-align:center;color:var(--ink-soft)}
+.hidden{display:none!important}
+/* ---------- responsive ---------- */
+@media(max-width:1000px){
+  .layout{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;bottom:0;width:262px;height:100vh;z-index:70;transform:translateX(-102%);transition:.32s var(--ease)}
+  .side.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.4)}
+  .burger{display:block}
+  .search input{width:170px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  main{padding:18px}
+  .top{padding:12px 16px}
+  .top h1{font-size:20px}
+}
+@media(max-width:620px){
+  .search{order:9;flex-basis:100%}
+  .search input{width:100%}
+  .top{flex-wrap:wrap}
+}
 </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <h1>Gestion produits</h1>
-    <div class="sub">Modifiez les prix, les tailles et le stock. Les changements s'appliquent à la boutique après enregistrement.</div>
-    <div class="bar">
-      <input id="q" type="search" placeholder="Rechercher un produit…" style="flex:1;min-width:200px">
-      <select id="fcat"><option value="">Toutes les catégories</option></select>
-      <a class="btn ghost" href="store.html" target="_blank" rel="noopener">Voir la boutique</a>
+<div class="layout">
+  <aside class="side" id="side">
+    <div class="brand" id="sideBrand">Charming Lil Store<span>Tableau de bord</span></div>
+    <nav class="menu" id="menu">
+      <a href="#/" data-v="dash"><svg viewBox="0 0 24 24"><path d="M4 13h7V4H4zM13 20h7v-9h-7zM4 20h7v-5H4zM13 9h7V4h-7z"/></svg>Tableau de bord</a>
+      <a href="#/products" data-v="products"><svg viewBox="0 0 24 24"><path d="M4 7l8-3 8 3v10l-8 3-8-3z"/><path d="M4 7l8 3 8-3M12 10v10"/></svg>Produits</a>
+      <a href="#/product/new" data-v="editor"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Ajouter un produit</a>
+      <a href="#/categories" data-v="categories"><svg viewBox="0 0 24 24"><path d="M4 5h7v6H4zM13 5h7v6h-7zM4 13h7v6H4zM13 13h7v6h-7z"/></svg>Catégories</a>
+      <a href="#/media" data-v="media"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z"/><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="9" r="1.4"/></svg>Médias</a>
+      <a href="#/homepage" data-v="homepage"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/><path d="M9 20v-6h6v6"/></svg>Page d'accueil</a>
+      <a href="#/settings" data-v="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6"/></svg>Paramètres</a>
+    </nav>
+    <div class="side-foot">
+      <a href="store.html" target="_blank" rel="noopener">Voir la boutique ↗</a>
+      <button id="btnExport">Exporter les données</button>
+      <button id="btnImport">Importer des données</button>
+      <button id="btnReset">Réinitialiser tout</button>
+      <input id="fileImport" type="file" accept="application/json" hidden>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      <h1 id="pageTitle">Tableau de bord</h1>
+      <div class="grow"></div>
+      <div class="search"><input id="gsearch" type="search" placeholder="Rechercher nom, SKU, catégorie…"></div>
+      <a class="btn nude" href="#/product/new">+ Ajouter</a>
+    </header>
+    <main id="view"></main>
+  </div>
+</div>
+
+<div class="veil" id="veil"><div class="modal" id="modal"></div></div>
+<div class="toasts" id="toasts"></div>
+
+<script src="store-data.js"></script>
+<script>
+/* ============================================================================
+   TABLEAU DE BORD — toutes les données passent par CLS (store-data.js).
+   ============================================================================ */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money=v=>new Intl.NumberFormat("fr-MA",{maximumFractionDigits:0}).format(+v||0)+" "+(CLS.getSettings().currency||"MAD");
+const SIZE_LABEL={bra:"Soutiens-gorge (70A–90D)",panty:"Culottes / bodys (XS–XXL)",sleep:"Pyjamas & nuit (XS–XXL)"};
+
+function toast(msg,err){
+  const t=document.createElement("div");
+  t.className="toast"+(err?" err":""); t.textContent=msg;
+  $("#toasts").appendChild(t);
+  requestAnimationFrame(()=>t.classList.add("on"));
+  setTimeout(()=>{t.classList.remove("on");setTimeout(()=>t.remove(),320)},3000);
+}
+function confirmBox(title,text,okLabel,onOk){
+  $("#modal").innerHTML=`<h3>${esc(title)}</h3><p>${esc(text)}</p>
+    <div class="row" style="justify-content:flex-end"><button class="btn ghost" data-cancel>Annuler</button>
+    <button class="btn bad" data-ok>${esc(okLabel)}</button></div>`;
+  $("#veil").classList.add("on");
+  $("#modal [data-cancel]").onclick=()=>$("#veil").classList.remove("on");
+  $("#modal [data-ok]").onclick=()=>{$("#veil").classList.remove("on");onOk()};
+}
+$("#veil").addEventListener("click",e=>{ if(e.target.id==="veil") $("#veil").classList.remove("on") });
+
+/* --------------------------- état de navigation --------------------------- */
+const state={view:"dash",filter:"all",q:"",editing:null,mediaPick:null};
+
+function catName(id){ const c=CLS.getCategories().find(x=>x.id===id); return c?c.n:id }
+function imgOf(ref){ return CLS.img(ref) }
+function discount(p){ return p.old&&p.old>p.price?Math.round((1-p.price/p.old)*100):0 }
+
+/* ================================ VUES =================================== */
+function viewDash(){
+  const st=CLS.stats(), ps=CLS.getProducts();
+  const recent=[...ps].sort((a,b)=>b.id-a.id).slice(0,5);
+  const alerts=ps.filter(p=>{const l=CLS.stockLabel(p);return l.k!=="ok"});
+  return `
+  <div class="stats">
+    <div class="stat acc"><b>${st.total}</b><span>Produits au total</span></div>
+    <div class="stat"><b>${st.published}</b><span>Publiés</span></div>
+    <div class="stat"><b>${st.hidden}</b><span>Masqués</span></div>
+    <div class="stat"><b>${st.low}</b><span>Stock faible</span></div>
+    <div class="stat"><b>${st.out}</b><span>En rupture</span></div>
+    <div class="stat"><b>${st.sale}</b><span>En promotion</span></div>
+    <div class="stat"><b>${st.categories}</b><span>Catégories</span></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>Produits récents</h2>
+    <p class="hint">Les dernières fiches créées ou dupliquées.</p>
+    ${tableHTML(recent)}
+  </div>
+
+  <div class="card">
+    <h2>Alertes de stock</h2>
+    <p class="hint">Produits en rupture ou dont il reste 3 unités ou moins.</p>
+    ${alerts.length?tableHTML(alerts):`<p class="muted">Aucune alerte : tous vos stocks sont confortables.</p>`}
+  </div>`;
+}
+
+function filtered(){
+  let list=CLS.getProducts();
+  const f=state.filter;
+  if(f==="published") list=list.filter(p=>p.visible);
+  if(f==="hidden") list=list.filter(p=>!p.visible);
+  if(f==="sale") list=list.filter(p=>discount(p)>0);
+  if(f==="low") list=list.filter(p=>CLS.stockLabel(p).k==="low");
+  if(f==="out") list=list.filter(p=>CLS.stockLabel(p).k==="out");
+  if(state.q){
+    const q=state.q.toLowerCase();
+    list=list.filter(p=>(p.name+" "+p.sku+" "+p.cat+" "+catName(p.cat)+" "+p.sub).toLowerCase().includes(q));
+  }
+  return list.sort((a,b)=>b.id-a.id);
+}
+
+function tableHTML(list){
+  if(!list.length) return `<div class="empty">Aucun produit ne correspond.</div>`;
+  return `<div class="tablewrap"><table>
+    <thead><tr><th>Produit</th><th>Catégorie</th><th>Prix</th><th>Stock</th><th>Statut</th><th>Actions</th></tr></thead>
+    <tbody>${list.map(p=>{
+      const sl=CLS.stockLabel(p), tot=CLS.stockTotal(p), d=discount(p);
+      return `<tr>
+        <td><div class="row" style="gap:12px;flex-wrap:nowrap">
+          <img class="th" src="${esc(imgOf(p.imgs[0]))}" alt="">
+          <div><div class="pname">${esc(p.name)}</div>
+          <div class="pmeta">${esc(p.sku)}${p.sub?" · "+esc(p.sub):""}</div></div></div></td>
+        <td>${esc(catName(p.cat))}</td>
+        <td>${money(p.price)}${p.old?`<div class="old">${money(p.old)}</div>`:""}
+            ${d?`<span class="tag sale">−${d}%</span>`:""}</td>
+        <td><span class="tag ${sl.k}">${esc(sl.t)}</span>${tot!==null?`<div class="pmeta">${tot} unité(s)</div>`:`<div class="pmeta">non suivi</div>`}</td>
+        <td><span class="tag ${p.visible?"pub":"hid"}">${p.visible?"Publié":"Masqué"}</span></td>
+        <td><div class="acts">
+          <a class="btn ghost sm" href="#/product/${p.id}">Éditer</a>
+          <button class="btn ghost sm" data-dup="${p.id}">Dupliquer</button>
+          <button class="btn ghost sm" data-toggle="${p.id}">${p.visible?"Masquer":"Publier"}</button>
+          <button class="btn bad sm" data-del="${p.id}">Supprimer</button>
+        </div></td>
+      </tr>`}).join("")}</tbody></table></div>`;
+}
+
+function viewProducts(){
+  const fs=[["all","Tous"],["published","Publiés"],["hidden","Masqués"],["sale","En promotion"],["low","Stock faible"],["out","En rupture"]];
+  return `
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <div><h2>Gestion des produits</h2><p class="hint" style="margin:4px 0 0">Éditez, dupliquez, masquez ou supprimez vos fiches. Les produits masqués restent ici mais disparaissent de la boutique.</p></div>
+      <a class="btn" href="#/product/new">+ Ajouter un produit</a>
+    </div>
+    <div class="sep"></div>
+    <div class="chips">${fs.map(([k,l])=>`<span class="chip ${state.filter===k?"on":""}" data-filter="${k}">${l}</span>`).join("")}</div>
+    <div style="margin-top:16px">${tableHTML(filtered())}</div>
+  </div>`;
+}
+
+/* ------------------------------- ÉDITEUR --------------------------------- */
+function blankProduct(){
+  return {id:0,name:"",cat:CLS.getCategories()[0]?.id||"lingerie",sub:"",price:0,old:0,imgs:[],
+    colors:[],sizeKey:"panty",sizes:[],tags:[],new:true,rating:4.8,reviews:0,desc:"",compo:[],
+    sku:"",visible:true,stock:{}};
+}
+function viewEditor(){
+  const p=state.editing;
+  const cats=CLS.getCategories(), colors=CLS.getColors(), sizes=CLS.SIZE_SETS[p.sizeKey]||[];
+  const d=discount(p);
+  return `
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <div><h2>${p.id?"Modifier le produit":"Nouveau produit"}</h2>
+      <p class="hint" style="margin:4px 0 0">${p.id?esc(p.name):"Renseignez la fiche, puis enregistrez : le produit apparaît aussitôt sur la boutique."}</p></div>
+      <a class="btn ghost" href="#/products">← Retour à la liste</a>
+    </div>
+    <div class="sep"></div>
+
+    <div class="grid2">
+      <div><label class="lb">Nom du produit</label><input id="f-name" value="${esc(p.name)}" placeholder="Ex. Ensemble Rose Poudré"></div>
+      <div><label class="lb">Référence / SKU</label><input id="f-sku" value="${esc(p.sku)}" placeholder="CLS-017"></div>
+      <div><label class="lb">Catégorie</label><select id="f-cat">${cats.map(c=>`<option value="${c.id}" ${c.id===p.cat?"selected":""}>${esc(c.n)}</option>`).join("")}</select></div>
+      <div><label class="lb">Sous-catégorie</label><input id="f-sub" value="${esc(p.sub)}" placeholder="Ex. Ensemble dentelle"></div>
+      <div><label class="lb">Prix actuel (${esc(CLS.getSettings().currency)})</label><input id="f-price" type="number" min="0" step="1" value="${p.price}"></div>
+      <div><label class="lb">Ancien prix (0 = pas de promo)</label><input id="f-old" type="number" min="0" step="1" value="${p.old}">
+        <p class="muted" style="font-size:12.5px;margin:6px 0 0" id="discLbl">${d?`Réduction calculée : −${d}%`:"Aucune réduction"}</p></div>
+    </div>
+
+    <div style="margin-top:16px"><label class="lb">Description</label><textarea id="f-desc" placeholder="Matières, coupe, conseils…">${esc(p.desc)}</textarea></div>
+    <div style="margin-top:16px"><label class="lb">Composition & entretien (une ligne par point)</label><textarea id="f-compo" style="min-height:84px">${esc((p.compo||[]).join("\n"))}</textarea></div>
+
+    <div class="grid3" style="margin-top:16px">
+      <div><label class="lb">Visibilité</label><select id="f-visible">
+        <option value="1" ${p.visible?"selected":""}>Publié (visible sur la boutique)</option>
+        <option value="0" ${p.visible?"":"selected"}>Masqué</option></select></div>
+      <div><label class="lb">Badge « Nouveauté »</label><select id="f-new">
+        <option value="1" ${p.new?"selected":""}>Oui</option><option value="0" ${p.new?"":"selected"}>Non</option></select></div>
+      <div><label class="lb">Note / avis</label><div class="row" style="flex-wrap:nowrap">
+        <input id="f-rating" type="number" min="0" max="5" step="0.1" value="${p.rating}">
+        <input id="f-reviews" type="number" min="0" step="1" value="${p.reviews}"></div></div>
     </div>
   </div>
-</header>
 
-<main class="wrap"><div id="list"></div></main>
+  <div class="card">
+    <h2>Images</h2>
+    <p class="hint">La première image est l'image principale. Déposez de nouvelles photos, choisissez-en dans vos médias, réordonnez ou supprimez.</p>
+    <div class="drop" id="pDrop">
+      <strong>Glissez vos images ici</strong>
+      <p class="muted" style="margin:6px 0 0">ou cliquez pour parcourir — JPG/PNG, redimensionnées automatiquement</p>
+      <input id="pFile" type="file" accept="image/*" multiple hidden>
+    </div>
+    <div class="row" style="margin-top:14px"><button class="btn ghost sm" id="pickMedia">Choisir dans les médias</button></div>
+    <div class="gal" style="margin-top:16px" id="pGal">${galleryHTML(p.imgs)}</div>
+  </div>
 
-<footer class="savebar">
-  <button class="btn rose" id="save">Enregistrer les modifications</button>
-  <button class="btn ghost" id="export">Exporter (JSON)</button>
-  <button class="btn ghost" id="importBtn">Importer (JSON)</button>
-  <button class="btn warn" id="reset">Réinitialiser</button>
-  <input id="importFile" type="file" accept="application/json" hidden>
-</footer>
-<div class="toast" id="toast"></div>
+  <div class="card">
+    <h2>Tailles & stock</h2>
+    <p class="hint">Choisissez le barème de tailles, cochez les tailles proposées et indiquez les quantités. 0 = rupture, 1–3 = stock faible.</p>
+    <label class="lb">Barème de tailles</label>
+    <select id="f-sizeKey" style="max-width:340px">${Object.keys(SIZE_LABEL).map(k=>`<option value="${k}" ${k===p.sizeKey?"selected":""}>${SIZE_LABEL[k]}</option>`).join("")}</select>
+    <div class="sizegrid" style="margin-top:16px">
+      ${sizes.map(s=>{
+        const on=(p.sizes||[]).includes(s), q=p.stock&&p.stock[s]!=null?p.stock[s]:"";
+        return `<div class="sizecell">
+          <div class="t"><label style="display:flex;gap:7px;align-items:center;cursor:pointer"><input type="checkbox" style="width:auto" data-size="${s}" ${on?"checked":""}> <b>${s}</b></label></div>
+          <input type="number" min="0" step="1" placeholder="—" data-stock="${s}" value="${q}">
+        </div>`}).join("")}
+    </div>
+  </div>
 
-<script>
-/* Les données de référence sont chargées depuis store.html : aucune duplication à maintenir. */
-const KEY="cls_admin";
-let SIZES={}, COLORS={}, CATS=[], PRODUCTS=[], DRAFT={};
+  <div class="card">
+    <h2>Couleurs</h2>
+    <p class="hint">Cochez les coloris disponibles. Les couleurs de la palette se gèrent dans Paramètres.</p>
+    <div class="chips" id="colorChips">${colors.map(c=>`<span class="chip ${(p.colors||[]).includes(c.id)?"on":""}" data-color="${c.id}"><span class="swatch" style="background:${esc(c.h)}"></span>${esc(c.n)}</span>`).join("")}</div>
+    <div class="sep"></div>
+    <label class="lb">Étiquettes additionnelles (séparées par des virgules)</label>
+    <input id="f-tags" value="${esc((p.tags||[]).join(", "))}" placeholder="promotions, nouveautes">
+    <p class="muted" style="font-size:12.5px;margin:8px 0 0">Ces étiquettes permettent au produit d'apparaître dans des rayons comme « Promotions » ou « Nouveautés ».</p>
+  </div>
 
-const $=s=>document.querySelector(s);
-const money=v=>new Intl.NumberFormat("fr-MA",{maximumFractionDigits:0}).format(v)+" MAD";
-function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),2200)}
-function load(){try{DRAFT=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){DRAFT={}}}
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-
-async function bootData(){
-  const src=await (await fetch("store.html",{cache:"no-store"})).text();
-  const grab=name=>{
-    const i=src.indexOf("const "+name+"=")>=0?src.indexOf("const "+name+"="):src.indexOf("const "+name+" =");
-    if(i<0) throw new Error("bloc "+name+" introuvable");
-    const start=src.indexOf("=",i)+1;
-    const open=src.slice(start).search(/[[{]/)+start;
-    const openCh=src[open], closeCh=openCh==="["?"]":"}";
-    let depth=0,inStr=null;
-    for(let j=open;j<src.length;j++){
-      const c=src[j];
-      if(inStr){ if(c==="\\"){j++;continue} if(c===inStr) inStr=null; continue }
-      if(c==='"'||c==="'"||c==="`"){inStr=c;continue}
-      if(c===openCh)depth++;
-      else if(c===closeCh){depth--; if(!depth) return src.slice(open,j+1)}
-    }
-    throw new Error("bloc "+name+" incomplet");
-  };
-  const IMGsrc=grab("IMG");
-  const evaluate=new Function("const IMG="+IMGsrc+";return {SIZES:"+grab("SIZES")+",COLORS:"+grab("COLORS")+",CATS:"+grab("CATS")+",PRODUCTS:"+grab("PRODUCTS")+"}");
-  const data=evaluate();
-  SIZES=data.SIZES; COLORS=data.COLORS; CATS=data.CATS; PRODUCTS=data.PRODUCTS;
-  $("#fcat").insertAdjacentHTML("beforeend",CATS.map(c=>`<option value="${c.id}">${esc(c.n)}</option>`).join(""));
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <div class="row">
+        <button class="btn" id="saveProduct">Enregistrer le produit</button>
+        <a class="btn ghost" href="#/products">Annuler</a>
+      </div>
+      ${p.id?`<div class="row"><button class="btn ghost" data-dup="${p.id}">Dupliquer</button><button class="btn bad" data-del="${p.id}">Supprimer</button></div>`:""}
+    </div>
+  </div>`;
+}
+function galleryHTML(imgs){
+  if(!imgs.length) return `<p class="muted">Aucune image pour l'instant — la boutique affichera une image par défaut.</p>`;
+  return imgs.map((ref,i)=>`<div class="gcell">
+    ${i===0?`<span class="mainbadge">Principale</span>`:""}
+    <img src="${esc(imgOf(ref))}" alt="">
+    <div class="gb">
+      <button class="mini" data-gmove="${i}" data-dir="-1" title="Déplacer à gauche">←</button>
+      <button class="mini" data-gmain="${i}" title="Image principale">★</button>
+      <button class="mini" data-gmove="${i}" data-dir="1" title="Déplacer à droite">→</button>
+      <button class="mini" data-gdel="${i}" title="Retirer">✕</button>
+    </div></div>`).join("");
 }
 
-function cur(p){
-  const o=DRAFT[p.id]||{};
-  return {
-    price:o.price!=null?o.price:p.price,
-    old:o.old!=null?o.old:(p.old||0),
-    stock:o.stock!=null?o.stock:10,
-    sizes:(o.sizes&&o.sizes.length)?o.sizes:SIZES[p.sizeKey].slice()
-  };
-}
-function setField(id,k,v){ (DRAFT[id]=DRAFT[id]||{})[k]=v }
-
-function stockTag(n){
-  if(n<=0) return '<span class="tag out">Rupture</span>';
-  if(n<=5) return '<span class="tag low">Stock faible</span>';
-  return '<span class="tag ok">En stock</span>';
-}
-
-function render(){
-  const q=$("#q").value.trim().toLowerCase(), fc=$("#fcat").value;
-  const list=PRODUCTS.filter(p=>(!fc||p.cat===fc)&&(!q||(p.name+" "+p.sub).toLowerCase().includes(q)));
-  $("#list").innerHTML=list.map(p=>{
-    const c=cur(p), all=SIZES[p.sizeKey], edited=!!DRAFT[p.id];
-    return `<div class="card" data-id="${p.id}">
-      <img src="${p.imgs[0]}" alt="${esc(p.name)}">
-      <div>
-        <div class="cat">${esc(p.cat)} · ${esc(p.sub)}</div>
-        <div class="nm">${esc(p.name)} ${stockTag(+c.stock)}${edited?'<span class="tag edited">modifié</span>':""}</div>
-        <div class="fields">
-          <div><label>Prix (MAD)</label><input type="number" min="0" step="1" data-k="price" value="${c.price}"></div>
-          <div><label>Ancien prix (0 = aucun)</label><input type="number" min="0" step="1" data-k="old" value="${c.old}"></div>
-          <div><label>Stock (unités)</label><input type="number" min="0" step="1" data-k="stock" value="${c.stock}"></div>
-        </div>
-        <div><label style="margin-top:14px">Tailles disponibles</label>
-          <div class="sizes">${all.map(s=>`<span class="sz ${c.sizes.includes(s)?"on":""}" data-size="${s}">${s}</span>`).join("")}</div>
+/* ------------------------------ CATÉGORIES -------------------------------- */
+function viewCategories(){
+  const cats=CLS.getCategories(), ps=CLS.getProducts();
+  return `
+  <div class="card">
+    <h2>Ajouter une catégorie</h2>
+    <p class="hint">Une nouvelle catégorie apparaît automatiquement dans la navigation de la boutique.</p>
+    <div class="grid3">
+      <div><label class="lb">Nom</label><input id="c-name" placeholder="Ex. Bodys"></div>
+      <div><label class="lb">Sous-catégories (virgules)</label><input id="c-subs" placeholder="Body dentelle, Body satin"></div>
+      <div style="display:flex;align-items:flex-end"><button class="btn" id="addCat">Ajouter</button></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Catégories existantes</h2>
+    <p class="hint">Modifiez le nom, l'image, les sous-catégories ou masquez une catégorie.</p>
+    ${cats.map(c=>`<div class="card" style="margin:0 0 12px;background:var(--ivory)">
+      <div class="row" style="align-items:flex-start;gap:16px;flex-wrap:nowrap">
+        <img class="th" style="width:70px;height:92px;object-fit:cover;border-radius:10px" src="${esc(imgOf(c.img))}" alt="">
+        <div style="flex:1;min-width:0">
+          <div class="grid3">
+            <div><label class="lb">Nom</label><input data-cat="${c.id}" data-k="n" value="${esc(c.n)}"></div>
+            <div><label class="lb">Sous-catégories</label><input data-cat="${c.id}" data-k="subs" value="${esc((c.subs||[]).join(", "))}"></div>
+            <div><label class="lb">Visibilité</label><select data-cat="${c.id}" data-k="visible">
+              <option value="1" ${c.visible!==false?"selected":""}>Visible</option>
+              <option value="0" ${c.visible===false?"selected":""}>Masquée</option></select></div>
+          </div>
+          <div class="row" style="margin-top:12px">
+            <span class="tag hid">${ps.filter(p=>p.cat===c.id).length} produit(s)</span>
+            <button class="btn ghost sm" data-catimg="${c.id}">Changer l'image</button>
+            <button class="btn bad sm" data-catdel="${c.id}">Supprimer</button>
+          </div>
         </div>
       </div>
-    </div>`;
-  }).join("")||`<p style="color:var(--muted)">Aucun produit ne correspond à cette recherche.</p>`;
+    </div>`).join("")}
+    <button class="btn" id="saveCats">Enregistrer les catégories</button>
+  </div>`;
 }
 
-document.addEventListener("input",e=>{
-  const inp=e.target.closest("input[data-k]");
-  if(inp){ const id=+inp.closest(".card").dataset.id; setField(id,inp.dataset.k,inp.value===""?0:+inp.value); return }
-  if(e.target.id==="q") render();
-});
-document.addEventListener("change",e=>{ if(e.target.id==="fcat") render() });
-document.addEventListener("click",e=>{
-  const sz=e.target.closest(".sz");
-  if(sz){
-    const card=sz.closest(".card"), id=+card.dataset.id, p=PRODUCTS.find(x=>x.id===id);
-    const chosen=[...card.querySelectorAll(".sz")].filter(el=>el!==sz?el.classList.contains("on"):!sz.classList.contains("on")).map(el=>el.dataset.size);
-    if(!chosen.length){ toast("Gardez au moins une taille."); return }
-    sz.classList.toggle("on");
-    setField(id,"sizes",SIZES[p.sizeKey].filter(s=>chosen.includes(s)));
+/* --------------------------------- MÉDIAS -------------------------------- */
+function viewMedia(){
+  const media=CLS.getMedia(), ps=CLS.getProducts();
+  const q=state.q.toLowerCase();
+  const list=q?media.filter(m=>m.name.toLowerCase().includes(q)):media;
+  const used=id=>ps.filter(p=>(p.imgs||[]).includes(id)).map(p=>p.name);
+  return `
+  <div class="card">
+    <h2>Bibliothèque d'images</h2>
+    <p class="hint">Déposez vos photos ici : elles sont ensuite réutilisables partout (produits, accueil, catégories, logo).</p>
+    <div class="drop" id="mDrop">
+      <strong>Glissez vos images ici</strong>
+      <p class="muted" style="margin:6px 0 0">ou cliquez pour parcourir</p>
+      <input id="mFile" type="file" accept="image/*" multiple hidden>
+    </div>
+    <div class="mgrid">${list.map(m=>{
+      const u=used(m.id);
+      return `<div class="mitem">
+        <img src="${esc(m.src)}" alt="${esc(m.name)}">
+        <div class="mb"><b title="${esc(m.name)}">${esc(m.name)}</b>
+          <span class="pmeta">${u.length?esc(u.length+" produit(s)"):"non utilisée"}</span>
+          <div class="r">
+            <button class="mini" data-mrename="${m.id}" title="Renommer">✎</button>
+            <button class="mini" data-mreplace="${m.id}" title="Remplacer le fichier">⟳</button>
+            <button class="mini" data-massign="${m.id}" title="Assigner à un produit">＋</button>
+            <button class="mini" data-mdel="${m.id}" title="Supprimer">✕</button>
+          </div>
+        </div></div>`}).join("")||`<div class="empty">Aucune image.</div>`}</div>
+    <input id="mReplaceFile" type="file" accept="image/*" hidden>
+  </div>`;
+}
+
+/* ------------------------------- ACCUEIL --------------------------------- */
+function viewHomepage(){
+  const H=CLS.getHomepage(), cats=CLS.getCategories(), ps=CLS.getProducts();
+  const catOpts=(sel)=>`<option value="all" ${sel==="all"?"selected":""}>Tout le catalogue</option>`+
+    cats.map(c=>`<option value="${c.id}" ${c.id===sel?"selected":""}>${esc(c.n)}</option>`).join("");
+  const sec=(k,label)=>{
+    const s=H.sections[k]||{};
+    return `<div class="card" style="margin:0 0 12px;background:var(--ivory)">
+      <div class="grid3">
+        <div><label class="lb">Section</label><input value="${esc(label)}" disabled></div>
+        ${s.eyebrow!==undefined?`<div><label class="lb">Surtitre</label><input data-sec="${k}" data-k="eyebrow" value="${esc(s.eyebrow||"")}"></div>`:`<div></div>`}
+        ${s.title!==undefined?`<div><label class="lb">Titre</label><input data-sec="${k}" data-k="title" value="${esc(s.title||"")}"></div>`:`<div></div>`}
+      </div>
+      <div class="row" style="margin-top:10px"><label style="display:flex;gap:8px;align-items:center;cursor:pointer">
+        <input type="checkbox" style="width:auto" data-sec="${k}" data-k="visible" ${s.visible!==false?"checked":""}> Afficher cette section</label></div>
+    </div>`;
+  };
+  return `
+  <div class="card">
+    <h2>Bannière principale</h2>
+    <p class="hint">Entourez un mot d'astérisques pour le mettre en italique, ex. « La lingerie qui *vous* ressemble ».</p>
+    <div class="row" style="align-items:flex-start;flex-wrap:nowrap;gap:16px">
+      <div style="width:150px"><img src="${esc(imgOf(H.hero.img))}" alt="" style="width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px">
+        <button class="btn ghost sm" style="margin-top:8px;width:100%" data-pickimg="hero">Changer</button></div>
+      <div style="flex:1;min-width:0">
+        <div class="grid2">
+          <div><label class="lb">Surtitre</label><input data-hero="eyebrow" value="${esc(H.hero.eyebrow||"")}"></div>
+          <div><label class="lb">Titre</label><input data-hero="title" value="${esc(H.hero.title||"")}"></div>
+        </div>
+        <div style="margin-top:12px"><label class="lb">Sous-titre</label><textarea data-hero="subtitle" style="min-height:70px">${esc(H.hero.subtitle||"")}</textarea></div>
+        <div class="grid2" style="margin-top:12px">
+          <div><label class="lb">Bouton 1 — texte</label><input data-hero="btn1t" value="${esc(H.hero.btn1?.t||"")}"></div>
+          <div><label class="lb">Bouton 1 — destination</label><select data-hero="btn1c">${catOpts(H.hero.btn1?.cat)}</select></div>
+          <div><label class="lb">Bouton 2 — texte</label><input data-hero="btn2t" value="${esc(H.hero.btn2?.t||"")}"></div>
+          <div><label class="lb">Bouton 2 — destination</label><select data-hero="btn2c">${catOpts(H.hero.btn2?.cat)}</select></div>
+        </div>
+        <div class="row" style="margin-top:12px"><label style="display:flex;gap:8px;align-items:center;cursor:pointer">
+          <input type="checkbox" style="width:auto" data-hero="visible" ${H.hero.visible!==false?"checked":""}> Afficher la bannière</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Bandeau promotionnel</h2>
+    <div class="row" style="align-items:flex-start;flex-wrap:nowrap;gap:16px">
+      <div style="width:150px"><img src="${esc(imgOf(H.banner.img))}" alt="" style="width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px">
+        <button class="btn ghost sm" style="margin-top:8px;width:100%" data-pickimg="banner">Changer</button></div>
+      <div style="flex:1;min-width:0">
+        <div class="grid2">
+          <div><label class="lb">Surtitre</label><input data-ban="eyebrow" value="${esc(H.banner.eyebrow||"")}"></div>
+          <div><label class="lb">Titre</label><input data-ban="title" value="${esc(H.banner.title||"")}"></div>
+        </div>
+        <div style="margin-top:12px"><label class="lb">Texte</label><textarea data-ban="text" style="min-height:70px">${esc(H.banner.text||"")}</textarea></div>
+        <div class="grid2" style="margin-top:12px">
+          <div><label class="lb">Bouton — texte</label><input data-ban="btnt" value="${esc(H.banner.btn?.t||"")}"></div>
+          <div><label class="lb">Bouton — destination</label><select data-ban="btnc">${catOpts(H.banner.btn?.cat)}</select></div>
+        </div>
+        <div class="row" style="margin-top:12px"><label style="display:flex;gap:8px;align-items:center;cursor:pointer">
+          <input type="checkbox" style="width:auto" data-ban="visible" ${H.banner.visible!==false?"checked":""}> Afficher le bandeau</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Produits mis en avant</h2>
+    <p class="hint">Sélectionnez les produits de la section « Produits populaires ». Sans sélection, les mieux notés s'affichent.</p>
+    <div class="chips">${ps.map(p=>`<span class="chip ${(H.featured||[]).map(Number).includes(p.id)?"on":""}" data-feat="${p.id}">${esc(p.name)}</span>`).join("")}</div>
+  </div>
+
+  <div class="card">
+    <h2>Sections de l'accueil</h2>
+    <p class="hint">Renommez ou masquez chaque section.</p>
+    ${sec("trust","Bandeau réassurance")}
+    ${sec("categories","Nos univers")}
+    ${sec("news","Nouveautés")}
+    ${sec("featured","Produits populaires")}
+    ${sec("pyjamas","Collection Pyjamas")}
+    ${sec("guide","Guide des tailles")}
+  </div>
+
+  <div class="card"><button class="btn" id="saveHome">Enregistrer la page d'accueil</button></div>`;
+}
+
+/* ------------------------------ PARAMÈTRES ------------------------------- */
+function viewSettings(){
+  const S=CLS.getSettings(), colors=CLS.getColors();
+  return `
+  <div class="card">
+    <h2>Informations boutique</h2>
+    <p class="hint">Ces informations s'appliquent immédiatement au header, au footer et aux boutons WhatsApp de la boutique.</p>
+    <div class="row" style="align-items:flex-start;flex-wrap:nowrap;gap:16px">
+      <div style="width:130px">
+        <img src="${esc(S.logo?imgOf(S.logo):"")}" alt="" style="width:100%;aspect-ratio:1;object-fit:contain;background:var(--cream);border-radius:12px" ${S.logo?"":'hidden'}>
+        ${S.logo?"":`<div style="aspect-ratio:1;background:var(--cream);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink-soft);text-align:center;padding:8px">Aucun logo</div>`}
+        <button class="btn ghost sm" style="margin-top:8px;width:100%" data-pickimg="logo">Logo</button>
+        ${S.logo?`<button class="btn ghost sm" style="margin-top:6px;width:100%" id="clearLogo">Retirer</button>`:""}
+      </div>
+      <div style="flex:1;min-width:0">
+        <div class="grid2">
+          <div><label class="lb">Nom de la boutique</label><input data-s="brand" value="${esc(S.brand)}"></div>
+          <div><label class="lb">Accroche (sous le nom)</label><input data-s="tagline" value="${esc(S.tagline)}"></div>
+          <div><label class="lb">Devise</label><input data-s="currency" value="${esc(S.currency)}"></div>
+          <div><label class="lb">Téléphone affiché</label><input data-s="phone" value="${esc(S.phone)}"></div>
+          <div><label class="lb">Numéro WhatsApp (chiffres)</label><input data-s="whatsapp" value="${esc(S.whatsapp)}"></div>
+          <div><label class="lb">E-mail</label><input data-s="email" value="${esc(S.email)}"></div>
+          <div><label class="lb">Instagram (@ ou lien)</label><input data-s="instagram" value="${esc(S.instagram||"")}"></div>
+          <div><label class="lb">Frais de livraison</label><div class="row" style="flex-wrap:nowrap">
+            <input data-s="shipBase" type="number" min="0" value="${S.shipping.base}" title="Frais">
+            <input data-s="shipFree" type="number" min="0" value="${S.shipping.freeFrom}" title="Offerte à partir de"></div>
+            <p class="muted" style="font-size:12px;margin:6px 0 0">Frais · offerts à partir de</p></div>
+        </div>
+        <div style="margin-top:12px"><label class="lb">Description (footer)</label><textarea data-s="description" style="min-height:74px">${esc(S.description)}</textarea></div>
+        <div class="grid2" style="margin-top:12px">
+          <div><label class="lb">Texte de bas de page</label><input data-s="footerText" value="${esc(S.footerText)}"></div>
+          <div><label class="lb">Mention de copyright</label><input data-s="copyright" value="${esc(S.copyright)}"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Palette de couleurs produits</h2>
+    <p class="hint">Nom et code couleur utilisés par les filtres et les fiches produits.</p>
+    <div id="colorRows">${colors.map((c,i)=>`<div class="row" style="flex-wrap:nowrap;margin-bottom:10px" data-crow="${i}">
+      <input type="color" style="width:52px;padding:4px" data-c="h" value="${esc(c.h)}">
+      <input data-c="n" value="${esc(c.n)}" placeholder="Nom de la couleur">
+      <button class="btn bad sm" data-cdel="${i}">Retirer</button>
+    </div>`).join("")}</div>
+    <button class="btn ghost sm" id="addColor">+ Ajouter une couleur</button>
+  </div>
+
+  <div class="card"><button class="btn" id="saveSettings">Enregistrer les paramètres</button></div>`;
+}
+
+/* ============================== ROUTAGE ================================== */
+const TITLES={dash:"Tableau de bord",products:"Produits",editor:"Fiche produit",categories:"Catégories",media:"Médias",homepage:"Page d'accueil",settings:"Paramètres"};
+function route(){
+  const h=(location.hash||"#/").slice(2).split("/");
+  if(h[0]==="products") state.view="products";
+  else if(h[0]==="product"){
+    state.view="editor";
+    state.editing=h[1]==="new"?blankProduct():(CLS.getProduct(h[1])||blankProduct());
   }
-});
-
-$("#save").onclick=()=>{
-  localStorage.setItem(KEY,JSON.stringify(DRAFT));
-  toast("Modifications enregistrées ✦ rechargez la boutique");
+  else if(h[0]==="categories") state.view="categories";
+  else if(h[0]==="media") state.view="media";
+  else if(h[0]==="homepage") state.view="homepage";
+  else if(h[0]==="settings") state.view="settings";
+  else state.view="dash";
   render();
-};
-$("#reset").onclick=()=>{
-  if(!confirm("Revenir aux prix, tailles et stocks d'origine ?")) return;
-  DRAFT={}; localStorage.removeItem(KEY); render(); toast("Valeurs d'origine rétablies");
-};
-$("#export").onclick=()=>{
-  const blob=new Blob([JSON.stringify(DRAFT,null,2)],{type:"application/json"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob); a.download="charming-produits.json"; a.click();
-  URL.revokeObjectURL(a.href);
-};
-$("#importBtn").onclick=()=>$("#importFile").click();
-$("#importFile").onchange=async e=>{
-  const f=e.target.files[0]; if(!f) return;
-  try{ DRAFT=JSON.parse(await f.text())||{}; render(); toast("Fichier importé — pensez à enregistrer") }
-  catch(err){ toast("Fichier JSON invalide") }
-  e.target.value="";
-};
+}
+function render(){
+  const v=state.view;
+  $("#pageTitle").textContent=TITLES[v];
+  $("#view").innerHTML=v==="products"?viewProducts():v==="editor"?viewEditor():
+    v==="categories"?viewCategories():v==="media"?viewMedia():
+    v==="homepage"?viewHomepage():v==="settings"?viewSettings():viewDash();
+  $$("#menu a").forEach(a=>a.classList.toggle("on",a.dataset.v===v));
+  const S=CLS.getSettings();
+  $("#sideBrand").innerHTML=esc(S.brand)+"<span>Tableau de bord</span>";
+  $("#side").classList.remove("open");
+  window.scrollTo(0,0);
+  bindView();
+}
+addEventListener("hashchange",route);
 
-load();
-bootData().then(render).catch(err=>{
-  $("#list").innerHTML=`<p style="color:var(--sale)">Impossible de charger la liste des produits (${esc(err.message)}).</p>`;
+/* --------------------------- images : upload ----------------------------- */
+function readResized(file,max=1000,quality=.82){
+  return new Promise((res,rej)=>{
+    const fr=new FileReader();
+    fr.onerror=()=>rej(new Error("Lecture impossible"));
+    fr.onload=()=>{
+      const im=new Image();
+      im.onerror=()=>rej(new Error("Image invalide"));
+      im.onload=()=>{
+        const r=Math.min(1,max/Math.max(im.width,im.height));
+        const w=Math.round(im.width*r), h=Math.round(im.height*r);
+        const cv=document.createElement("canvas"); cv.width=w; cv.height=h;
+        cv.getContext("2d").drawImage(im,0,0,w,h);
+        res(cv.toDataURL("image/jpeg",quality));
+      };
+      im.src=fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+async function importFiles(files){
+  const added=[];
+  for(const f of files){
+    if(!/^image\//.test(f.type)) continue;
+    try{ added.push(CLS.addMedia(f.name.replace(/\.[^.]+$/,""),await readResized(f))) }
+    catch(err){ toast(err.message||"Import impossible",true); break }
+  }
+  if(added.length) toast(added.length+" image(s) ajoutée(s) ✦");
+  return added;
+}
+function dropZone(zone,input,onFiles){
+  if(!zone) return;
+  zone.onclick=()=>input.click();
+  input.onchange=async e=>{ const f=[...e.target.files]; e.target.value=""; await onFiles(f) };
+  ["dragenter","dragover"].forEach(ev=>zone.addEventListener(ev,e=>{e.preventDefault();zone.classList.add("hot")}));
+  ["dragleave","drop"].forEach(ev=>zone.addEventListener(ev,e=>{e.preventDefault();zone.classList.remove("hot")}));
+  zone.addEventListener("drop",async e=>{ await onFiles([...e.dataTransfer.files]) });
+}
+
+/* --------------------------- sélecteur de média -------------------------- */
+function pickMedia(onPick){
+  const media=CLS.getMedia();
+  $("#modal").innerHTML=`<h3>Choisir une image</h3>
+    <p>Sélectionnez une image de votre bibliothèque.</p>
+    <div class="mgrid" style="max-height:52vh;overflow:auto;margin-bottom:18px">
+      ${media.map(m=>`<div class="mitem"><img data-pick="${m.id}" src="${esc(m.src)}" alt="${esc(m.name)}"><div class="mb"><b>${esc(m.name)}</b></div></div>`).join("")||`<p class="muted">Aucune image : ajoutez-en dans Médias.</p>`}
+    </div>
+    <div class="row" style="justify-content:flex-end"><button class="btn ghost" data-cancel>Fermer</button></div>`;
+  $("#veil").classList.add("on");
+  $("#modal [data-cancel]").onclick=()=>$("#veil").classList.remove("on");
+  $$("#modal [data-pick]").forEach(im=>im.onclick=()=>{ $("#veil").classList.remove("on"); onPick(im.dataset.pick) });
+}
+function promptBox(title,value,onOk){
+  $("#modal").innerHTML=`<h3>${esc(title)}</h3><input id="pv" value="${esc(value)}">
+    <div class="row" style="justify-content:flex-end;margin-top:18px"><button class="btn ghost" data-cancel>Annuler</button><button class="btn" data-ok>Valider</button></div>`;
+  $("#veil").classList.add("on"); $("#pv").focus();
+  $("#modal [data-cancel]").onclick=()=>$("#veil").classList.remove("on");
+  $("#modal [data-ok]").onclick=()=>{ const v=$("#pv").value.trim(); $("#veil").classList.remove("on"); onOk(v) };
+}
+
+/* ------------------------ actions communes produits --------------------- */
+function bindCommonProductActions(root){
+  $$("[data-dup]",root).forEach(b=>b.onclick=()=>{
+    const c=CLS.duplicateProduct(b.dataset.dup);
+    toast(`« ${c.name} » créé (masqué) ✦`); location.hash="#/product/"+c.id; route();
+  });
+  $$("[data-toggle]",root).forEach(b=>b.onclick=()=>{
+    const p=CLS.toggleProduct(b.dataset.toggle);
+    toast(p.visible?"Produit publié ✦":"Produit masqué"); render();
+  });
+  $$("[data-del]",root).forEach(b=>b.onclick=()=>{
+    const p=CLS.getProduct(b.dataset.del);
+    confirmBox("Supprimer ce produit ?","Cette action est définitive et ne peut pas être annulée.","Supprimer",()=>{
+      CLS.deleteProduct(p.id); toast(`« ${p.name} » supprimé`);
+      if(state.view==="editor"){ location.hash="#/products"; route() } else render();
+    });
+  });
+}
+
+/* ------------------------------ liaisons -------------------------------- */
+function bindView(){
+  const root=$("#view");
+  bindCommonProductActions(root);
+  $$("[data-filter]",root).forEach(c=>c.onclick=()=>{ state.filter=c.dataset.filter; render() });
+
+  if(state.view==="editor") bindEditor(root);
+  if(state.view==="categories") bindCategories(root);
+  if(state.view==="media") bindMedia(root);
+  if(state.view==="homepage") bindHomepage(root);
+  if(state.view==="settings") bindSettings(root);
+}
+
+function bindEditor(root){
+  const p=state.editing;
+  dropZone($("#pDrop",root),$("#pFile",root),async files=>{
+    const added=await importFiles(files);
+    p.imgs=p.imgs.concat(added.map(m=>m.id)); collectEditor(); render();
+  });
+  $("#pickMedia",root).onclick=()=>pickMedia(id=>{ collectEditor(); p.imgs.push(id); render() });
+  $$("[data-gdel]",root).forEach(b=>b.onclick=()=>{ collectEditor(); p.imgs.splice(+b.dataset.gdel,1); render() });
+  $$("[data-gmain]",root).forEach(b=>b.onclick=()=>{ collectEditor(); const i=+b.dataset.gmain; p.imgs.unshift(p.imgs.splice(i,1)[0]); render() });
+  $$("[data-gmove]",root).forEach(b=>b.onclick=()=>{
+    collectEditor();
+    const i=+b.dataset.gmove, j=i+ +b.dataset.dir;
+    if(j<0||j>=p.imgs.length) return;
+    [p.imgs[i],p.imgs[j]]=[p.imgs[j],p.imgs[i]]; render();
+  });
+  $$("[data-color]",root).forEach(c=>c.onclick=()=>c.classList.toggle("on"));
+  $("#f-sizeKey",root).onchange=e=>{ collectEditor(); p.sizeKey=e.target.value; p.sizes=CLS.SIZE_SETS[p.sizeKey].slice(); p.stock={}; render() };
+  const upd=()=>{
+    const price=+$("#f-price",root).value||0, old=+$("#f-old",root).value||0;
+    $("#discLbl",root).textContent=old>price&&old?`Réduction calculée : −${Math.round((1-price/old)*100)}%`:"Aucune réduction";
+  };
+  $("#f-price",root).oninput=upd; $("#f-old",root).oninput=upd;
+  $("#saveProduct",root).onclick=saveProduct;
+}
+function collectEditor(){
+  const p=state.editing, root=$("#view");
+  const g=id=>$("#"+id,root);
+  if(!g("f-name")) return p;
+  p.name=g("f-name").value.trim();
+  p.sku=g("f-sku").value.trim();
+  p.cat=g("f-cat").value;
+  p.sub=g("f-sub").value.trim();
+  p.price=+g("f-price").value||0;
+  p.old=+g("f-old").value||0;
+  p.desc=g("f-desc").value.trim();
+  p.compo=g("f-compo").value.split("\n").map(s=>s.trim()).filter(Boolean);
+  p.visible=g("f-visible").value==="1";
+  p.new=g("f-new").value==="1";
+  p.rating=+g("f-rating").value||0;
+  p.reviews=+g("f-reviews").value||0;
+  p.sizeKey=g("f-sizeKey").value;
+  p.sizes=$$("[data-size]",root).filter(c=>c.checked).map(c=>c.dataset.size);
+  const stock={};
+  $$("[data-stock]",root).forEach(i=>{ if(i.value!==""&&p.sizes.includes(i.dataset.stock)) stock[i.dataset.stock]=Math.max(0,+i.value||0) });
+  p.stock=stock;
+  p.colors=$$("[data-color].on",root).map(c=>c.dataset.color);
+  p.tags=g("f-tags").value.split(",").map(s=>s.trim()).filter(Boolean);
+  return p;
+}
+function saveProduct(){
+  const p=collectEditor();
+  if(!p.name){ toast("Le nom du produit est obligatoire.",true); return }
+  if(!p.price||p.price<=0){ toast("Indiquez un prix supérieur à 0.",true); return }
+  if(p.old&&p.old<=p.price){ toast("L'ancien prix doit être supérieur au prix actuel.",true); return }
+  if(!p.sizes.length){ toast("Sélectionnez au moins une taille.",true); return }
+  if(p.id){ CLS.updateProduct(p.id,p); toast("Produit mis à jour ✦ la boutique est à jour") }
+  else { const np=CLS.addProduct(p); state.editing=np; location.hash="#/product/"+np.id; toast("Produit créé ✦ visible sur la boutique") }
+  route();
+}
+
+function bindCategories(root){
+  $("#addCat",root).onclick=()=>{
+    const n=$("#c-name",root).value.trim();
+    if(!n){ toast("Donnez un nom à la catégorie.",true); return }
+    const subs=$("#c-subs",root).value.split(",").map(s=>s.trim()).filter(Boolean);
+    CLS.addCategory({n,subs}); toast(`Catégorie « ${n} » ajoutée ✦`); render();
+  };
+  $$("[data-catimg]",root).forEach(b=>b.onclick=()=>pickMedia(id=>{ CLS.updateCategory(b.dataset.catimg,{img:id}); toast("Image mise à jour ✦"); render() }));
+  $$("[data-catdel]",root).forEach(b=>b.onclick=()=>{
+    const id=b.dataset.catdel, used=CLS.getProducts().filter(p=>p.cat===id).length;
+    confirmBox("Supprimer cette catégorie ?",used?`${used} produit(s) y sont rattachés : ils resteront dans la boutique mais sans rayon. Action définitive.`:"Cette action est définitive et ne peut pas être annulée.","Supprimer",()=>{
+      CLS.deleteCategory(id); toast("Catégorie supprimée"); render();
+    });
+  });
+  $("#saveCats",root).onclick=()=>{
+    const byId={};
+    $$("[data-cat]",root).forEach(el=>{
+      const id=el.dataset.cat; byId[id]=byId[id]||{};
+      if(el.dataset.k==="subs") byId[id].subs=el.value.split(",").map(s=>s.trim()).filter(Boolean);
+      else if(el.dataset.k==="visible") byId[id].visible=el.value==="1";
+      else byId[id][el.dataset.k]=el.value.trim();
+    });
+    let bad=false;
+    Object.keys(byId).forEach(id=>{ if(byId[id].n==="") bad=true; else CLS.updateCategory(id,byId[id]) });
+    if(bad){ toast("Le nom d'une catégorie ne peut pas être vide.",true); return }
+    toast("Catégories enregistrées ✦"); render();
+  };
+}
+
+function bindMedia(root){
+  dropZone($("#mDrop",root),$("#mFile",root),async files=>{ await importFiles(files); render() });
+  $$("[data-mrename]",root).forEach(b=>b.onclick=()=>{
+    const m=CLS.getMedia().find(x=>x.id===b.dataset.mrename);
+    promptBox("Renommer l'image",m.name,v=>{ if(v){ CLS.updateMedia(m.id,{name:v}); toast("Image renommée ✦"); render() } });
+  });
+  $$("[data-mreplace]",root).forEach(b=>b.onclick=()=>{
+    const inp=$("#mReplaceFile",root);
+    inp.onchange=async e=>{
+      const f=e.target.files[0]; e.target.value=""; if(!f) return;
+      try{ CLS.updateMedia(b.dataset.mreplace,{src:await readResized(f)}); toast("Image remplacée ✦ la boutique est à jour"); render() }
+      catch(err){ toast(err.message||"Remplacement impossible",true) }
+    };
+    inp.click();
+  });
+  $$("[data-massign]",root).forEach(b=>b.onclick=()=>{
+    const id=b.dataset.massign, ps=CLS.getProducts();
+    $("#modal").innerHTML=`<h3>Assigner à un produit</h3><p>L'image sera ajoutée à la galerie du produit choisi.</p>
+      <select id="apSel">${ps.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join("")}</select>
+      <div class="row" style="justify-content:flex-end;margin-top:18px"><button class="btn ghost" data-cancel>Annuler</button><button class="btn" data-ok>Assigner</button></div>`;
+    $("#veil").classList.add("on");
+    $("#modal [data-cancel]").onclick=()=>$("#veil").classList.remove("on");
+    $("#modal [data-ok]").onclick=()=>{
+      const pid=$("#apSel").value, p=CLS.getProduct(pid);
+      CLS.updateProduct(pid,{imgs:(p.imgs||[]).concat([id])});
+      $("#veil").classList.remove("on"); toast(`Image ajoutée à « ${p.name} » ✦`); render();
+    };
+  });
+  $$("[data-mdel]",root).forEach(b=>b.onclick=()=>{
+    const id=b.dataset.mdel, used=CLS.getProducts().filter(p=>(p.imgs||[]).includes(id)).length;
+    confirmBox("Supprimer cette image ?",used?`Elle est utilisée par ${used} produit(s), qui afficheront une image par défaut. Action définitive.`:"Cette action est définitive et ne peut pas être annulée.","Supprimer",()=>{
+      CLS.deleteMedia(id); toast("Image supprimée"); render();
+    });
+  });
+}
+
+function bindHomepage(root){
+  $$("[data-pickimg]",root).forEach(b=>b.onclick=()=>pickMedia(id=>{
+    const H=collectHome(); const k=b.dataset.pickimg;
+    if(k==="hero") H.hero.img=id; if(k==="banner") H.banner.img=id;
+    CLS.saveHomepage(H); toast("Image mise à jour ✦ la boutique est à jour"); render();
+  }));
+  $$("[data-feat]",root).forEach(c=>c.onclick=()=>c.classList.toggle("on"));
+  $("#saveHome",root).onclick=()=>{ CLS.saveHomepage(collectHome()); toast("Page d'accueil enregistrée ✦"); render() };
+}
+function collectHome(){
+  const root=$("#view"), H=CLS.getHomepage(), g=(sel)=>$(sel,root);
+  const hv=k=>$(`[data-hero="${k}"]`,root);
+  if(hv("title")){
+    H.hero.eyebrow=hv("eyebrow").value.trim();
+    H.hero.title=hv("title").value.trim();
+    H.hero.subtitle=hv("subtitle").value.trim();
+    H.hero.btn1={t:hv("btn1t").value.trim(),cat:hv("btn1c").value};
+    H.hero.btn2={t:hv("btn2t").value.trim(),cat:hv("btn2c").value};
+    H.hero.visible=hv("visible").checked;
+    const bv=k=>$(`[data-ban="${k}"]`,root);
+    H.banner.eyebrow=bv("eyebrow").value.trim();
+    H.banner.title=bv("title").value.trim();
+    H.banner.text=bv("text").value.trim();
+    H.banner.btn={t:bv("btnt").value.trim(),cat:bv("btnc").value};
+    H.banner.visible=bv("visible").checked;
+    H.featured=$$("[data-feat].on",root).map(c=>+c.dataset.feat);
+    $$("[data-sec]",root).forEach(el=>{
+      const k=el.dataset.sec, f=el.dataset.k;
+      H.sections[k]=H.sections[k]||{};
+      H.sections[k][f]=f==="visible"?el.checked:el.value.trim();
+    });
+  }
+  return H;
+}
+
+function bindSettings(root){
+  $$("[data-pickimg]",root).forEach(b=>b.onclick=()=>pickMedia(id=>{
+    const S=collectSettings(); S.logo=id; CLS.saveSettings(S); toast("Logo mis à jour ✦"); render();
+  }));
+  const cl=$("#clearLogo",root);
+  if(cl) cl.onclick=()=>{ const S=collectSettings(); S.logo=""; CLS.saveSettings(S); toast("Logo retiré"); render() };
+  $("#addColor",root).onclick=()=>{
+    const S=collectSettings(); S.colors=(S.colors||CLS.getColors()).concat([{id:"c"+Date.now().toString(36),n:"Nouvelle couleur",h:"#dcc3b2"}]);
+    CLS.saveSettings(S); render();
+  };
+  $$("[data-cdel]",root).forEach(b=>b.onclick=()=>{
+    const S=collectSettings(); S.colors.splice(+b.dataset.cdel,1); CLS.saveSettings(S); toast("Couleur retirée"); render();
+  });
+  $("#saveSettings",root).onclick=()=>{
+    const S=collectSettings();
+    if(!S.brand){ toast("Le nom de la boutique est obligatoire.",true); return }
+    if(!/^\d{8,15}$/.test(String(S.whatsapp).replace(/\D/g,""))){ toast("Numéro WhatsApp invalide (chiffres uniquement).",true); return }
+    CLS.saveSettings(S); toast("Paramètres enregistrés ✦ la boutique est à jour"); render();
+  };
+}
+function collectSettings(){
+  const root=$("#view"), S=CLS.getSettings();
+  $$("[data-s]",root).forEach(el=>{
+    const k=el.dataset.s, v=el.value;
+    if(k==="shipBase") S.shipping.base=Math.max(0,+v||0);
+    else if(k==="shipFree") S.shipping.freeFrom=Math.max(0,+v||0);
+    else S[k]=typeof v==="string"?v.trim():v;
+  });
+  const rows=$$("[data-crow]",root);
+  if(rows.length) S.colors=rows.map((r,i)=>{
+    const prev=CLS.getColors()[i]||{};
+    const n=$('[data-c="n"]',r).value.trim()||"Couleur";
+    return {id:prev.id||CLS.slug(n),n,h:$('[data-c="h"]',r).value};
+  });
+  return S;
+}
+
+/* ------------------------- header & barre latérale ---------------------- */
+$("#burger").onclick=()=>$("#side").classList.toggle("open");
+$("#gsearch").oninput=e=>{
+  state.q=e.target.value.trim();
+  if(state.view!=="products"&&state.view!=="media"){ location.hash="#/products"; return }
+  render(); $("#gsearch").focus();
+};
+$("#btnExport").onclick=()=>{
+  const blob=new Blob([JSON.stringify(CLS.exportAll(),null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download="charming-store-data.json"; a.click(); URL.revokeObjectURL(a.href);
+  toast("Sauvegarde exportée ✦");
+};
+$("#btnImport").onclick=()=>$("#fileImport").click();
+$("#fileImport").onchange=async e=>{
+  const f=e.target.files[0]; e.target.value=""; if(!f) return;
+  try{ CLS.importAll(JSON.parse(await f.text())); toast("Données importées ✦"); render() }
+  catch(err){ toast("Fichier JSON invalide",true) }
+};
+$("#btnReset").onclick=()=>confirmBox("Réinitialiser toutes les données ?","Produits, catégories, médias, accueil et paramètres reviendront aux valeurs d'origine. Action définitive.","Réinitialiser",()=>{
+  CLS.resetAll(); toast("Données réinitialisées"); render();
 });
+
+route();
 </script>
 </body>
 </html>
