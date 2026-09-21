@@ -417,7 +417,7 @@ footer a{opacity:.72}footer a:hover{opacity:1;color:var(--nude)}
   <div class="wrap">
     <div class="tb-side"><span>Livraison partout au Maroc</span></div>
     <div class="tb-ticker"><span class="tb-dot"></span><span id="tickerTxt">Paiement à la livraison — Commandez sans avance</span></div>
-    <div class="tb-side"><a href="#" data-nl>Newsletter −10%</a><a href="https://wa.me/212658344379" target="_blank" rel="noopener">+212 658 344 379</a></div>
+    <div class="tb-side"><a href="#" data-nl>Newsletter −10%</a><a data-set-wa href="#" target="_blank" rel="noopener"><span data-set="phone">+212 658 344 379</span></a></div>
   </div>
 </div>
 
@@ -428,7 +428,7 @@ footer a{opacity:.72}footer a:hover{opacity:1;color:var(--nude)}
       <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
     <a class="logo" href="#" data-go="home">
-      <b>Charming Lil Store</b><span>Lingerie &amp; Pyjamas</span>
+      <b data-set="brand">Charming Lil Store</b><span data-set="tagline">Lingerie &amp; Pyjamas</span>
     </a>
     <nav class="hd-nav" id="megaNav"></nav>
     <div class="hd-tools">
@@ -459,13 +459,13 @@ footer a{opacity:.72}footer a:hover{opacity:1;color:var(--nude)}
 <!-- ======================= MOBILE NAV ======================= -->
 <aside class="mnav" id="mnav">
   <div class="mnav-hd">
-    <span class="logo"><b>Charming Lil Store</b><span>Lingerie &amp; Pyjamas</span></span>
+    <span class="logo"><b data-set="brand">Charming Lil Store</b><span data-set="tagline">Lingerie &amp; Pyjamas</span></span>
     <button class="icon-btn" data-close-mnav aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
   <div class="mnav-body" id="mnavBody"></div>
   <div class="mnav-foot">
     <strong>Service client</strong>
-    <a href="https://wa.me/212658344379" target="_blank" rel="noopener">WhatsApp · +212 658 344 379</a>
+    <a data-set-wa href="#" target="_blank" rel="noopener">WhatsApp · <span data-set="phone">+212 658 344 379</span></a>
     <span class="muted">Paiement à la livraison · Livraison 24–72h</span>
   </div>
 </aside>
@@ -493,9 +493,11 @@ footer a{opacity:.72}footer a:hover{opacity:1;color:var(--nude)}
   <div class="wrap">
     <div class="f-grid">
       <div>
-        <div class="f-logo"><b>Charming Lil Store</b><span>Lingerie &amp; Pyjamas</span></div>
-        <p style="opacity:.72;margin:16px 0 0;max-width:300px">La lingerie qui vous ressemble : des matières douces, des coupes justes et un service attentionné, partout au Maroc.</p>
-        <p style="margin-top:14px"><a href="https://wa.me/212658344379" target="_blank" rel="noopener">WhatsApp · +212 658 344 379</a></p>
+        <div class="f-logo"><b data-set="brand">Charming Lil Store</b><span data-set="tagline">Lingerie &amp; Pyjamas</span></div>
+        <p style="opacity:.72;margin:16px 0 0;max-width:300px" data-set="description">La lingerie qui vous ressemble : des matières douces, des coupes justes et un service attentionné, partout au Maroc.</p>
+        <p style="margin-top:14px"><a data-set-wa href="#" target="_blank" rel="noopener">WhatsApp · <span data-set="phone">+212 658 344 379</span></a></p>
+        <p style="opacity:.72;margin:8px 0 0" data-set="footerText"></p>
+        <p style="margin-top:8px"><a data-set-mail href="#"><span data-set="email"></span></a> <a data-set-ig href="#" target="_blank" rel="noopener" hidden style="margin-left:12px">Instagram</a></p>
       </div>
       <div><h4>Boutique</h4><ul>
         <li><a href="#" data-go="shop" data-cat="lingerie">Lingerie</a></li>
@@ -507,7 +509,7 @@ footer a{opacity:.72}footer a:hover{opacity:1;color:var(--nude)}
       <div><h4>Aide</h4><ul>
         <li><a href="#" data-guide>Guide des tailles</a></li>
         <li><a href="#" data-go="shop" data-cat="promotions">Promotions</a></li>
-        <li><a href="https://wa.me/212658344379" target="_blank" rel="noopener">Suivre ma commande</a></li>
+        <li><a data-set-wa href="#" target="_blank" rel="noopener">Suivre ma commande</a></li>
         <li><a href="#" data-nl>Newsletter</a></li>
       </ul></div>
       <div><h4>Livraison</h4><ul>
@@ -518,13 +520,13 @@ footer a{opacity:.72}footer a:hover{opacity:1;color:var(--nude)}
       </ul></div>
     </div>
     <div class="f-bot">
-      <span>© <span id="yr"></span> Charming Lil Store — Tous droits réservés.</span>
+      <span>© <span id="yr"></span> <span data-set="copyright">Charming Lil Store — Tous droits réservés.</span></span>
       <div class="pays"><span class="pay">Paiement à la livraison</span><span class="pay">Cash</span><span class="pay">MAD</span></div>
     </div>
   </div>
 </footer>
 
-<a class="wa" href="https://wa.me/212658344379?text=Bonjour%20Charming%20Lil%20Store%2C%20j'ai%20une%20question" target="_blank" rel="noopener" aria-label="WhatsApp">
+<a class="wa" data-set-wa href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 0-2.9-.8s-3.4-2.8-3.6-3-1-1.4-1-2.6.6-1.8.9-2c.2-.3.4-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 1.9c.1.2.1.4 0 .5l-.4.6c-.1.2-.2.3 0 .5.3.5.8 1.1 1.3 1.5.6.5 1.1.7 1.3.8s.4.1.5-.1l.7-.8c.2-.2.3-.1.5 0l1.7.9c.2.1.4.2.4.3.1.2.1.6-.1 1.2z"/></svg>
 </a>
 
@@ -558,7 +560,7 @@ footer a{opacity:.72}footer a:hover{opacity:1;color:var(--nude)}
     <div style="margin-top:26px;padding:18px;background:var(--cream)">
       <strong style="font-weight:500">Besoin d'aide ?</strong>
       <p class="muted" style="margin:8px 0 0">Notre équipe répond sur WhatsApp de 9h à 21h.</p>
-      <a class="btn btn-rose btn-block" style="margin-top:12px" href="https://wa.me/212658344379" target="_blank" rel="noopener">Écrire sur WhatsApp</a>
+      <a class="btn btn-rose btn-block" style="margin-top:12px" data-set-wa href="#" target="_blank" rel="noopener">Écrire sur WhatsApp</a>
     </div>
   </div>
 </aside>
@@ -603,7 +605,7 @@ const stockTotal = p => CLS.stockTotal(p);
    2. UTILITAIRES & ÉTAT
    ============================================================================ */
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const money=v=>new Intl.NumberFormat("fr-MA",{maximumFractionDigits:0}).format(v)+" MAD";
+const money=v=>new Intl.NumberFormat("fr-MA",{maximumFractionDigits:0}).format(v)+" "+(SHOP.currency||"MAD");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const pct=p=>p.old?Math.round((1-p.price/p.old)*100):0;
 const byId=id=>PRODUCTS.find(p=>p.id===+id);
@@ -695,75 +697,111 @@ function cardHTML(p){
 /* ============================================================================
    5. PAGE ACCUEIL
    ============================================================================ */
+/* --- Réglages boutique appliqués au header / footer statiques --- */
+function applySettings(){
+  const map={brand:SETTINGS.brand,tagline:SETTINGS.tagline,phone:SETTINGS.phone,
+    description:SETTINGS.description,footerText:SETTINGS.footerText,
+    copyright:SETTINGS.copyright,email:SETTINGS.email};
+  $$("[data-set]").forEach(el=>{
+    const v=map[el.dataset.set];
+    if(v!=null) el.textContent=v;
+  });
+  $$("[data-set-wa]").forEach(a=>{ a.href=SHOP.waLink });
+  $$("[data-set-mail]").forEach(a=>{ a.href="mailto:"+(SETTINGS.email||""); a.hidden=!SETTINGS.email });
+  $$("[data-set-ig]").forEach(a=>{
+    const ig=(SETTINGS.instagram||"").trim();
+    if(!ig){ a.hidden=true; return }
+    a.hidden=false;
+    a.href=/^https?:/.test(ig)?ig:"https://instagram.com/"+ig.replace(/^@/,"");
+  });
+  const logo=SETTINGS.logo?CLS.img(SETTINGS.logo,MEDIA):"";
+  if(logo){
+    $$(".logo, .f-logo").forEach(el=>{
+      if(el.querySelector("img.set-logo")) return;
+      const im=document.createElement("img");
+      im.className="set-logo"; im.src=logo; im.alt=SETTINGS.brand||"";
+      im.style.cssText="max-height:34px;width:auto;display:block;margin:0 auto 4px";
+      el.prepend(im);
+      el.querySelectorAll('[data-set="brand"]').forEach(b=>{ b.hidden=true });
+    });
+  }
+  document.title=(SETTINGS.brand||"Boutique")+" — "+(SETTINGS.tagline||"");
+}
+
+function emph(s){ return esc(s).replace(/\*(.+?)\*/g,'<em>$1</em>') }
 function homeHTML(){
+  const H=HOME, S=H.sections||{};
   const news=PRODUCTS.filter(p=>p.new).slice(0,4);
-  const pop=[...PRODUCTS].sort((a,b)=>b.reviews-a.reviews).slice(0,4);
+  const featIds=(H.featured||[]).map(Number).filter(Boolean);
+  const feat=featIds.length
+    ? featIds.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean).slice(0,8)
+    : [...PRODUCTS].sort((a,b)=>b.reviews-a.reviews).slice(0,4);
   const pyj=PRODUCTS.filter(p=>p.cat==="pyjamas").slice(0,4);
+  const cats=CATS.filter(c=>!["nouveautes","promotions"].includes(c.id)).slice(0,4);
+  const hero=H.hero||{}, ban=H.banner||{};
+  const catLink=c=>`data-go="shop" data-cat="${esc(c||"all")}"`;
   return `
-  <section class="hero">
-    <div class="hero-img"><img src="${IMG.hero}" alt="Lingerie en dentelle rose poudré Charming Lil Store" width="1600" height="1104" /></div>
+  ${hero.visible===false?"":`<section class="hero">
+    <div class="hero-img"><img src="${CLS.img(hero.img,MEDIA)}" alt="${esc(hero.title||SHOP.brand)}" width="1600" height="1104" /></div>
     <div class="wrap"><div class="hero-txt reveal">
-      <p class="eyebrow">Nouvelle collection · Automne</p>
-      <h1>La lingerie qui <em>vous</em> ressemble</h1>
-      <p>Dentelles délicates, satins fluides et pyjamas doux. Livrés partout au Maroc, avec paiement à la livraison.</p>
+      ${hero.eyebrow?`<p class="eyebrow">${esc(hero.eyebrow)}</p>`:""}
+      <h1>${emph(hero.title||"")}</h1>
+      <p>${esc(hero.subtitle||"")}</p>
       <div class="hero-cta">
-        <a class="btn btn-dark" href="#" data-go="shop" data-cat="nouveautes">Découvrir les nouveautés</a>
-        <a class="btn btn-ghost" href="#" data-go="shop" data-cat="pyjamas">Voir les pyjamas</a>
+        ${hero.btn1&&hero.btn1.t?`<a class="btn btn-dark" href="#" ${catLink(hero.btn1.cat)}>${esc(hero.btn1.t)}</a>`:""}
+        ${hero.btn2&&hero.btn2.t?`<a class="btn btn-ghost" href="#" ${catLink(hero.btn2.cat)}>${esc(hero.btn2.t)}</a>`:""}
       </div>
     </div></div>
-  </section>
+  </section>`}
 
-  <section class="trust"><div class="wrap"><div class="trust-grid">
+  ${S.trust&&S.trust.visible===false?"":`<section class="trust"><div class="wrap"><div class="trust-grid">
     <div class="trust-cell"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg><div><strong>Paiement à la livraison</strong><span>Vous payez en recevant</span></div></div>
     <div class="trust-cell"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg><div><strong>Livraison 24–72h</strong><span>Toutes les villes du Maroc</span></div></div>
     <div class="trust-cell"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3.2-6.9"/><path d="M8 12l3 3 5-6"/></svg><div><strong>Échange 14 jours</strong><span>Taille mal choisie ? On l'échange</span></div></div>
-    <div class="trust-cell"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg><div><strong>Conseil WhatsApp</strong><span>${SHOP.phone}</span></div></div>
-  </div></div></section>
+    <div class="trust-cell"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg><div><strong>Conseil WhatsApp</strong><span>${esc(SHOP.phone)}</span></div></div>
+  </div></div></section>`}
 
-  <section class="blk"><div class="wrap">
-    <div class="blk-hd reveal"><div><p class="eyebrow">Nos univers</p><h2>Explorer la boutique</h2></div>
+  ${S.categories&&S.categories.visible===false?"":`<section class="blk"><div class="wrap">
+    <div class="blk-hd reveal"><div><p class="eyebrow">${esc((S.categories||{}).eyebrow||"Nos univers")}</p><h2>${esc((S.categories||{}).title||"Explorer la boutique")}</h2></div>
       <a class="link-more" href="#" data-go="shop" data-cat="all">Tout le catalogue</a></div>
     <div class="cats">
-      <div class="cat reveal" data-go="shop" data-cat="soutiens-gorge"><img src="${IMG.bra1}" alt="Soutiens-gorge" loading="lazy"><div class="cat-lbl"><span>18 tailles</span><strong>Soutiens-gorge</strong></div></div>
-      <div class="cat reveal" data-go="shop" data-cat="culottes"><img src="${IMG.panty}" alt="Culottes" loading="lazy"><div class="cat-lbl"><span>Invisible & confort</span><strong>Culottes</strong></div></div>
-      <div class="cat reveal" data-go="shop" data-cat="pyjamas"><img src="${IMG.pyj1}" alt="Pyjamas" loading="lazy"><div class="cat-lbl"><span>Satin & coton</span><strong>Pyjamas</strong></div></div>
-      <div class="cat reveal" data-go="shop" data-cat="ensembles"><img src="${IMG.set}" alt="Ensembles" loading="lazy"><div class="cat-lbl"><span>Duos assortis</span><strong>Ensembles</strong></div></div>
+      ${cats.map(c=>`<div class="cat reveal" ${catLink(c.id)}><img src="${CLS.img(c.img,MEDIA)}" alt="${esc(c.n)}" loading="lazy"><div class="cat-lbl"><span>${esc((c.subs&&c.subs[0])||"Collection")}</span><strong>${esc(c.n)}</strong></div></div>`).join("")}
     </div>
-  </div></section>
+  </div></section>`}
 
-  <section class="blk" style="padding-top:0"><div class="wrap">
-    <div class="blk-hd reveal"><div><p class="eyebrow">Tout juste arrivé</p><h2>Nouveautés</h2></div>
+  ${S.news&&S.news.visible===false?"":`<section class="blk" style="padding-top:0"><div class="wrap">
+    <div class="blk-hd reveal"><div><p class="eyebrow">${esc((S.news||{}).eyebrow||"Tout juste arrivé")}</p><h2>${esc((S.news||{}).title||"Nouveautés")}</h2></div>
       <a class="link-more" href="#" data-go="shop" data-cat="nouveautes">Voir tout</a></div>
     <div class="grid">${news.map(cardHTML).join("")}</div>
-  </div></section>
+  </div></section>`}
 
-  <section class="promo"><div class="promo-in">
-    <div class="promo-img"><img src="${IMG.pyjBanner}" alt="Pyjama satin rose poudré" loading="lazy"></div>
+  ${ban.visible===false?"":`<section class="promo"><div class="promo-in">
+    <div class="promo-img"><img src="${CLS.img(ban.img,MEDIA)}" alt="${esc(ban.title||"Promotion")}" loading="lazy"></div>
     <div class="promo-txt reveal">
-      <p class="eyebrow">Offre limitée</p>
-      <h2>Jusqu'à −40% sur les pyjamas satin</h2>
-      <p class="muted">Le confort du satin, la douceur du coton. Profitez de la sélection nuit à prix doux, paiement à la livraison inclus.</p>
+      ${ban.eyebrow?`<p class="eyebrow">${esc(ban.eyebrow)}</p>`:""}
+      <h2>${esc(ban.title||"")}</h2>
+      <p class="muted">${esc(ban.text||"")}</p>
       <div class="countdown" id="cd">
         <div class="cd-box"><b>00</b><span>Jours</span></div><div class="cd-box"><b>00</b><span>Heures</span></div>
         <div class="cd-box"><b>00</b><span>Min</span></div><div class="cd-box"><b>00</b><span>Sec</span></div>
       </div>
-      <div style="margin-top:12px"><a class="btn btn-dark" href="#" data-go="shop" data-cat="promotions">Profiter des promos</a></div>
+      ${ban.btn&&ban.btn.t?`<div style="margin-top:12px"><a class="btn btn-dark" href="#" ${catLink(ban.btn.cat)}>${esc(ban.btn.t)}</a></div>`:""}
     </div>
-  </div></section>
+  </div></section>`}
 
-  <section class="blk"><div class="wrap">
-    <div class="blk-hd reveal"><div><p class="eyebrow">Les préférés de nos clientes</p><h2>Produits populaires</h2></div>
+  ${S.featured&&S.featured.visible===false?"":`<section class="blk"><div class="wrap">
+    <div class="blk-hd reveal"><div><p class="eyebrow">${esc((S.featured||{}).eyebrow||"Les préférés de nos clientes")}</p><h2>${esc((S.featured||{}).title||"Produits populaires")}</h2></div>
       <a class="link-more" href="#" data-go="shop" data-cat="all">Tout voir</a></div>
-    <div class="grid">${pop.map(cardHTML).join("")}</div>
-  </div></section>
+    <div class="grid">${feat.map(cardHTML).join("")}</div>
+  </div></section>`}
 
-  <section class="blk" style="background:var(--cream)"><div class="wrap">
-    <div class="blk-hd reveal"><div><p class="eyebrow">Nuits douces</p><h2>Collection Pyjamas</h2></div>
+  ${S.pyjamas&&S.pyjamas.visible===false?"":`<section class="blk" style="background:var(--cream)"><div class="wrap">
+    <div class="blk-hd reveal"><div><p class="eyebrow">${esc((S.pyjamas||{}).eyebrow||"Nuits douces")}</p><h2>${esc((S.pyjamas||{}).title||"Collection Pyjamas")}</h2></div>
       <a class="link-more" href="#" data-go="shop" data-cat="pyjamas">Voir la collection</a></div>
     <div class="grid">${pyj.map(cardHTML).join("")}</div>
-  </div></section>
+  </div></section>`}
 
-  <section class="blk"><div class="wrap center reveal" style="max-width:720px;margin:0 auto">
+  ${S.guide&&S.guide.visible===false?"":`<section class="blk"><div class="wrap center reveal" style="max-width:720px;margin:0 auto">
     <p class="eyebrow">Bien choisir sa taille</p>
     <h2 style="font-size:clamp(26px,3.4vw,40px);margin:10px 0 14px">Un doute entre 75B et 80B ?</h2>
     <p class="muted">Notre guide détaille les tours de dos et les profondeurs de bonnet, du 70A au 90D, ainsi que les tailles culottes et pyjamas. Et si besoin, écrivez-nous sur WhatsApp : on vous répond en quelques minutes.</p>
@@ -771,8 +809,9 @@ function homeHTML(){
       <button class="btn btn-dark" data-guide>Ouvrir le guide des tailles</button>
       <a class="btn btn-ghost" href="${SHOP.waLink}" target="_blank" rel="noopener">Demander conseil</a>
     </div>
-  </div></section>`;
+  </div></section>`}`;
 }
+
 
 /* ============================================================================
    6. CATALOGUE
@@ -894,7 +933,7 @@ function renderPDP(){
       </div>
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
         <div class="qty"><button data-pq="-1">−</button><b>${pdp.qty}</b><button data-pq="1">+</button></div>
-        <span class="muted" style="font-size:13px">${inStock(p)?(p.stock!=null&&p.stock<=5?`Plus que ${p.stock} en stock`:"En stock · expédié en 24h"):"Rupture de stock"}</span>
+        <span class="muted" style="font-size:13px">${inStock(p)?(stockTotal(p)!==null&&stockTotal(p)<=3?`Plus que ${stockTotal(p)} en stock`:"En stock · expédié en 24h"):"Rupture de stock"}</span>
       </div>
       <div class="pdp-cta">
         <button class="btn btn-dark btn-block" data-addpdp ${inStock(p)?"":"disabled style=\"opacity:.45;cursor:not-allowed\""}>${inStock(p)?"Ajouter au panier":"Indisponible"}</button>
@@ -1241,13 +1280,13 @@ $("#newsForm").addEventListener("submit",e=>{e.preventDefault();e.target.reset()
 addEventListener("scroll",()=>$("#hdr").classList.toggle("small",scrollY>90));
 
 /* ticker */
-const TICKS=["Paiement à la livraison — Commandez sans avance","Livraison offerte dès 600 MAD","Nouveautés pyjamas satin en ligne","Échange gratuit sous 14 jours"];
+const TICKS=["Paiement à la livraison — Commandez sans avance","Livraison offerte dès "+money(SHOP.shipping.freeFrom)+"","Nouveautés pyjamas satin en ligne","Échange gratuit sous 14 jours"];
 let ti=0;setInterval(()=>{ti=(ti+1)%TICKS.length;const el=$("#tickerTxt");el.style.opacity=0;
   setTimeout(()=>{el.textContent=TICKS[ti];el.style.opacity=1},300)},4200);
 $("#tickerTxt").style.transition="opacity .3s";
 
 $("#yr").textContent=new Date().getFullYear();
-buildNav();render();syncBadges();
+applySettings();buildNav();render();syncBadges();
 </script>
 </body>
 </html>
